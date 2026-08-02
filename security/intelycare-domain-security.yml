@@ -1,0 +1,27 @@
+generated: '2026-08-01'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.intelycare.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  9 13:08:10 2026 GMT
+  hsts: true
+  hsts_max_age: 31536000
+- host: apidocs.intelycare.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 20 15:24:19 2026 GMT
+  hsts: false
+- host: api.intelycare.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov 24 23:59:59 2026 GMT
+  hsts: null
+domains:
+- domain: intelycare.com
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: reject

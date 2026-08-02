@@ -1,23 +1,128 @@
 aid: intelycare
 name: IntelyCare
-description: 'IntelyCare is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  IntelyCare is a healthcare workforce platform that connects post-acute and acute-care facilities with
+  W2-employed per-diem nursing professionals ("IntelyPros") — RNs, LPNs and CNAs — through an app-based
+  marketplace covering per-diem shifts, contract placements and travel assignments, plus credentialing,
+  onboarding, continuing education (IntelyEdu) and 24/7 clinical support. For facilities it provides
+  scheduling, shift-fill and timekeeping software. IntelyCare exposes a public External Scheduling REST
+  API that lets a facility's own scheduling or EHR system programmatically create, update and cancel
+  shift requests, exchange timecards for billing reconciliation, and post clock-in/clock-out events,
+  with HMAC-signed webhooks pushing shift-accept and shift-release status back in real time. IntelyCare
+  acquired CareRev in January 2026 and also operates the Credenza verified-nursing-identity job board.
+image: https://www.intelycare.com/wp-content/uploads/2023/08/ic-logo-2-1.svg
 url: https://raw.githubusercontent.com/api-evangelist/intelycare/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
-specificationVersion: '0.20'
+specificationVersion: '0.21'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:
-- Company
-apis: []
+- healthcare
+- healthcare-staffing
+- nursing
+- workforce-management
+- scheduling
+- shift-management
+- timekeeping
+- marketplace
+- webhooks
+- per-diem
+- credentialing
+- post-acute-care
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- name: IntelyCare External Scheduling API
+  description: >-
+    REST API for integrating a facility's scheduling, EHR or workforce system with the IntelyCare Staffing
+    platform. Clients create, update and delete shift requests, submit and update timecards for billing
+    reconciliation, and post clock-in/clock-out events. All requests and responses are JSON-encoded;
+    bulk operations are not supported (one object per request). Authentication is an X-API-KEY header
+    scoped to a single client, paired with an X-CLIENT-ID header. Real-time shift status is pushed back
+    via HMAC-SHA256-signed webhooks (Shift Accept, Shift Release).
+  humanURL: https://apidocs.intelycare.com/
+  baseURL: https://api.intelycare.com/external-scheduling/v1/
+  tags:
+  - healthcare
+  - healthcare-staffing
+  - nursing
+  - workforce-management
+  - scheduling
+  - shift-management
+  - timekeeping
+  - webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/intelycare-external-scheduling-openapi.yml
+  - type: Documentation
+    url: https://apidocs.intelycare.com/
+  - type: APIReference
+    url: https://apidocs.intelycare.com/
+  - type: GettingStarted
+    url: https://apidocs.intelycare.com/
+  - type: Webhooks
+    url: asyncapi/intelycare-shift-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/intelycare-shift-events-asyncapi.yml
+  - type: Overlay
+    url: overlays/intelycare-external-scheduling-overlay.yaml
+  - type: Examples
+    url: examples/intelycare-examples.yml
+  - type: Sandbox
+    url: sandbox/intelycare-sandbox.yml
 common:
 - type: Website
-  url: https://forgeglobal.com/intelycare_stock/
+  url: https://www.intelycare.com/
+- type: Documentation
+  url: https://apidocs.intelycare.com/
+- type: APIReference
+  url: https://apidocs.intelycare.com/
+- type: GettingStarted
+  url: https://apidocs.intelycare.com/
+- type: Support
+  url: https://www.intelycare.com/company/contact-us/
+- type: Blog
+  url: https://www.intelycare.com/blog/nursing-professionals/
+- type: Pricing
+  url: https://credenzahealth.com/facilities/employer-products
+- type: SignUp
+  url: https://www.intelycare.com/for-nursing-professionals/apply/
+- type: Login
+  url: https://app.intelycare.com/facility/login
+- type: TermsOfService
+  url: https://www.intelycare.com/terms-of-use/
+- type: PrivacyPolicy
+  url: https://www.intelycare.com/privacy-policy/
+- type: Authentication
+  url: authentication/intelycare-authentication.yml
+- type: Conventions
+  url: conventions/intelycare-conventions.yml
+- type: ErrorCatalog
+  url: errors/intelycare-problem-types.yml
+- type: DataModel
+  url: data-model/intelycare-data-model.yml
+- type: Lifecycle
+  url: lifecycle/intelycare-lifecycle.yml
+- type: Conformance
+  url: conformance/intelycare-conformance.yml
+- type: DomainSecurity
+  url: security/intelycare-domain-security.yml
+- type: LLMsTxt
+  url: llms/intelycare-llms.txt
+- type: AgenticAccess
+  url: agentic-access/intelycare-agentic-access.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: Sandbox
+  url: sandbox/intelycare-sandbox.yml
+- type: Examples
+  url: examples/intelycare-examples.yml
+x-enrichment:
+  date: '2026-08-01'
+  status: enriched
+  artifacts_added: 20
+  pass: local-v1

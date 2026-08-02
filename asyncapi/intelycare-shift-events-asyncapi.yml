@@ -1,0 +1,239 @@
+asyncapi: 3.0.0
+
+# ---------------------------------------------------------------------------
+# PROVENANCE
+#   generated: '2026-08-01'
+#   method: derived
+#   source: openapi/intelycare-external-scheduling-openapi.yml  (info.x-webhooks)
+#   docs:   https://apidocs.intelycare.com/
+#
+#   IntelyCare does NOT publish an AsyncAPI document. IntelyCare DOES publish a real event
+#   surface: two HMAC-signed webhooks declared as OpenAPI `x-webhooks` (ShiftAccept,
+#   ShiftRelease). This document is a faithful AsyncAPI 3.0.0 projection of those two
+#   declarations — every channel, message, payload property, enum, example and the security
+#   scheme are carried over verbatim from IntelyCare's own spec. Nothing is invented. The
+#   webhook delivery URL is configured per client by IntelyCare and is not published, so the
+#   server below is modelled as a client-hosted receiver.
+# ---------------------------------------------------------------------------
+
+info:
+  title: IntelyCare Shift Events
+  version: 1.0.0
+  description: |
+    Real-time updates on the status of submitted shifts. IntelyCare POSTs a signed JSON payload
+    to a client-configured HTTPS endpoint when a shift is accepted by a healthcare professional
+    (an "IntelyPro") or released back to the marketplace.
+
+    Every webhook carries an `X-Signature-IC` header containing an HMAC hex digest (SHA256) of
+    the body payload, computed with the webhook secret. Verify it before processing.
+  contact:
+    name: API Support
+    email: apisupport@intelycare.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  externalDocs:
+    description: IntelyCare API Documentation
+    url: https://apidocs.intelycare.com/
+
+defaultContentType: application/json
+
+servers:
+  clientReceiver:
+    host: webhook.example.com
+    protocol: https
+    description: >-
+      Client-hosted HTTPS receiver. IntelyCare delivers webhooks to a URL configured per client;
+      the endpoint is not published in the API documentation. Replace with your own host.
+
+channels:
+  shiftAccept:
+    address: /
+    title: Shift Accept
+    description: Webhook event for shift accept.
+    messages:
+      ShiftAccept:
+        $ref: '#/components/messages/ShiftAccept'
+  shiftRelease:
+    address: /
+    title: Shift Release
+    description: Webhook event for shift release.
+    messages:
+      ShiftRelease:
+        $ref: '#/components/messages/ShiftRelease'
+
+operations:
+  receiveShiftAccept:
+    action: receive
+    channel:
+      $ref: '#/channels/shiftAccept'
+    summary: Shift Accept
+    description: Webhook event for shift accept.
+    security:
+      - $ref: '#/components/securitySchemes/HMACSignature'
+    messages:
+      - $ref: '#/channels/shiftAccept/messages/ShiftAccept'
+  receiveShiftRelease:
+    action: receive
+    channel:
+      $ref: '#/channels/shiftRelease'
+    summary: Shift Release
+    description: Webhook event for shift release.
+    security:
+      - $ref: '#/components/securitySchemes/HMACSignature'
+    messages:
+      - $ref: '#/channels/shiftRelease/messages/ShiftRelease'
+
+components:
+  securitySchemes:
+    HMACSignature:
+      type: httpApiKey
+      in: header
+      name: X-Signature-IC
+      description: >-
+        The hash signature of the payload. IntelyCare webhooks use a HMAC hex digest (SHA256) to
+        compute the signature of the body payload with the webhook secret.
+
+  messages:
+    ShiftAccept:
+      name: ShiftAccept
+      title: Shift Accept
+      summary: A shift request has been accepted by a healthcare professional.
+      contentType: application/json
+      headers:
+        type: object
+        required: [X-Signature-IC]
+        properties:
+          X-Signature-IC:
+            type: string
+            description: >-
+              The hash signature of the payload. IntelyCare webhooks uses a HMAC hex digest
+              (SHA256) to compute the signature of the body payload with the webhook secret.
+            examples:
+              - a0b1c1d2e3f5a8b13c21d34e55f89a144b233c377d610e987f1597a2584b4181
+      payload:
+        $ref: '#/components/schemas/ShiftAcceptPayload'
+      examples:
+        - name: shiftAccepted
+          payload:
+            clientId: 1234
+            externalShiftId: '2546810'
+            shiftStatus: Accepted
+            healthcareProfessional:
+              id: '456789'
+              externalId: '111124'
+              lastName: Nightengale
+              firstName: Florence
+              healthcareProfessionalType: LPN
+              phoneNumber: (800) 900-1234
+              email: florence.nightengale@gmail.com
+              profilePicture: XfPy2KmGiZTQySSS3OHCWw==
+            statusTimestamp: '2024-01-17T15:01:00'
+
+    ShiftRelease:
+      name: ShiftRelease
+      title: Shift Release
+      summary: A previously accepted shift has been released back to the marketplace.
+      contentType: application/json
+      headers:
+        type: object
+        required: [X-Signature-IC]
+        properties:
+          X-Signature-IC:
+            type: string
+            description: >-
+              The hash signature of the payload. IntelyCare webhooks uses a HMAC hex digest
+              (SHA256) to compute the signature of the body payload with the webhook secret.
+            examples:
+              - a0b1c1d2e3f5a8b13c21d34e55f89a144b233c377d610e987f1597a2584b4181
+      payload:
+        $ref: '#/components/schemas/ShiftReleasePayload'
+      examples:
+        - name: shiftReleased
+          payload:
+            clientId: 1234
+            externalShiftId: '2546810'
+            shiftStatus: Released
+            statusTimestamp: '2024-01-17T15:01:00'
+
+  schemas:
+    ShiftStatus:
+      type: string
+      description: Status of the shift.
+      enum: [Accepted, Completed, Released, Deleted]
+
+    HealthcareProfessional:
+      type: object
+      description: >-
+        Healthcare Professional object containing all information about the assigned worker.
+      required:
+        - id
+        - externalId
+        - lastName
+        - firstName
+        - healthcareProfessionalType
+        - phoneNumber
+        - email
+      properties:
+        id:
+          type: integer
+          description: Unique identifier of the shift.
+        externalId:
+          type: integer
+          description: External identifier for the shift.
+        lastName:
+          type: string
+          description: Last name of the assigned worker.
+        firstName:
+          type: string
+          description: First name of the assigned worker.
+        healthcareProfessionalType:
+          type: string
+          description: Healthcare professional qualification needed for the given shift.
+        phoneNumber:
+          type: string
+          description: Phone number for the assigned worker.
+          examples: ['(800) 900-1234']
+        email:
+          type: string
+          description: Email for the assigned worker.
+        profilePicture:
+          type: string
+          description: Base64 encoded string of the assigned workers profile image.
+          examples: ['XfPy2KmGiZTQySSS3OHCWw==']
+
+    ShiftAcceptPayload:
+      type: object
+      required: [clientId, externalShiftId, shiftStatus, healthcareProfessional, statusTimestamp]
+      properties:
+        clientId:
+          type: integer
+          description: Unique identifier of the client.
+        externalShiftId:
+          type: integer
+          description: Unique identifier for the shift.
+        shiftStatus:
+          $ref: '#/components/schemas/ShiftStatus'
+        healthcareProfessional:
+          $ref: '#/components/schemas/HealthcareProfessional'
+        statusTimestamp:
+          type: string
+          description: Status timestamp in ISO 8601 format and in UTC timezone.
+          examples: ['2024-01-17T15:01:00']
+
+    ShiftReleasePayload:
+      type: object
+      required: [clientId, externalShiftId, shiftStatus, statusTimestamp]
+      properties:
+        clientId:
+          type: integer
+          description: Unique identifier of the client.
+        externalShiftId:
+          type: integer
+          description: Unique identifier for the shift.
+        shiftStatus:
+          $ref: '#/components/schemas/ShiftStatus'
+        statusTimestamp:
+          type: string
+          description: Status timestamp in ISO 8601 format and in UTC timezone.
+          examples: ['2024-01-17T15:01:00']

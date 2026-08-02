@@ -1,0 +1,155 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/intelycare-external-scheduling-openapi.yml
+docs: https://apidocs.intelycare.com/
+note: >-
+  Derived from the request/response bodies, path parameters and x-webhooks payloads of the
+  published OpenAPI. IntelyCare declares only two reusable components.schemas
+  (TimecardAttribute, IC-CorrelationID) — every other object is inline, and 200 responses are
+  example-only with no schema. The entities below are therefore reconstructed from field names,
+  required lists and the published example payloads. No object-reference page is published, so
+  there are no documented id prefixes.
+
+entities:
+- name: Client
+  description: >-
+    The facility/organization integrating with IntelyCare. Every request is scoped to one client
+    via the X-CLIENT-ID header and an X-API-KEY that cannot be used outside that scope.
+  identifiers:
+  - {field: clientId, type: integer, owner: intelycare, example: 1234}
+  appears_in: [X-CLIENT-ID header, shift 200 response, timecard 200 response, ShiftAccept payload, ShiftRelease payload]
+
+- name: Facility
+  description: >-
+    The care site where the shift is worked. Surfaces explicitly only on the clock-in/out
+    operation; on shift operations the facility is implied by the client scope and drives local
+    timezone resolution.
+  identifiers:
+  - {field: facilityId, type: integer, owner: intelycare, example: 77666555, note: "described in the spec as 'Unique identifier for the client'"}
+  fields:
+  - {field: shiftUnit, type: string, description: Facility unit where care should be delivered}
+  - {field: timezone, type: string, description: Facility timezone, example: ET}
+
+- name: Shift
+  description: >-
+    A single request for a healthcare professional to work a defined window at a facility unit.
+    The core entity of the API. Carries dual identity — a client-supplied externalShiftId and an
+    IntelyCare-assigned internalShiftId.
+  identifiers:
+  - {field: externalShiftId, type: string, owner: client, example: '2546810', note: client-supplied natural key}
+  - {field: internalShiftId, type: integer, owner: intelycare, example: 10174202, note: "returned on 200; used as the {shiftId} path parameter"}
+  - {field: shiftId, type: string, owner: intelycare, location: path, note: "IntelyCare's unique identifier of the shift, used on PUT/DELETE /api/shifts/{shiftId}"}
+  fields:
+  - {field: shiftStartTime, type: string, format: iso8601, required: true}
+  - {field: shiftEndTime, type: string, format: iso8601, required: true}
+  - {field: shiftDate, type: string, format: date, note: derived, present on 200 response only}
+  - {field: shiftUnit, type: string, required: true}
+  - {field: healthcareProfessionalType, type: string, required: true, examples: [CNA, LPN, RN]}
+  - {field: shiftSource, type: string, required: true, description: Shift origination point}
+  - {field: shiftBoostPercentage, type: integer, default: 0, description: Percentage amount for boosting the shift}
+  - {field: timezone, type: string}
+  - {field: shiftStatus, type: string, enum: [Accepted, Completed, Released, Deleted], note: only ever emitted on webhooks, never on a REST response}
+  operations: [shift_create_api_v1, shift_update_api_v1, shift_delete_api_v1]
+
+- name: HealthcareProfessional
+  description: >-
+    The nursing professional ("IntelyPro") assigned to a shift. Never created or read via REST —
+    it only ever arrives inbound on the ShiftAccept webhook, and is referenced by nurseId on
+    clock-in/out.
+  identifiers:
+  - {field: id, type: integer, owner: intelycare, example: '456789'}
+  - {field: externalId, type: integer, owner: client, example: '111124'}
+  - {field: nurseId, type: integer, owner: intelycare, example: 67798, note: the clock-in/out projection of the same worker}
+  - {field: providerId, type: integer, note: appears in the clock-in/out 200 example as the echo of nurseId}
+  fields:
+  - {field: firstName, type: string, required: true}
+  - {field: lastName, type: string, required: true}
+  - {field: healthcareProfessionalType, type: string, required: true}
+  - {field: phoneNumber, type: string, required: true}
+  - {field: email, type: string, required: true}
+  - {field: profilePicture, type: string, format: base64, required: false}
+  - {field: discipline, type: string, nullable: true, note: present but always null in the clock-in/out example}
+  pii: true
+  pii_note: >-
+    The ShiftAccept webhook payload carries the assigned worker's full name, phone number, email
+    address and a base64-encoded profile photograph. Treat webhook receivers as PII processors.
+
+- name: Timecard
+  description: >-
+    Timekeeping record for a completed shift, exchanged for billing reconciliation. Keyed on the
+    client-supplied externalShiftId — there is no timecard id.
+  identifiers:
+  - {field: externalShiftId, type: string, owner: client, note: the timecard has no id of its own; it is keyed on the shift}
+  fields:
+  - {field: checkIn, type: string, format: iso8601, required: true}
+  - {field: checkOut, type: string, format: iso8601, required: true}
+  - {field: breakDuration, type: integer, unit: minutes, required: true}
+  - {field: createdAt, type: string, format: iso8601, note: response only}
+  - {field: errors, nullable: true, note: response only, always null in the published example}
+  operations: [timecard_create_api_v1, update_timecard_api_v1]
+
+- name: ClockEvent
+  description: >-
+    A single clock-in or clock-out punch for a worker on a shift at a facility, posted per
+    platform. Distinct from Timecard — this is the raw punch, Timecard is the reconciled total.
+  identifiers:
+  - {field: platform_type, type: string, location: path, example: intelycare, description: "IntelyCare's unique identifier of the platform using this API"}
+  fields:
+  - {field: nurseId, type: integer, required: true}
+  - {field: shiftId, type: integer, required: true}
+  - {field: facilityId, type: integer, required: true}
+  - {field: clockTime, type: string, format: iso8601, required: true}
+  - {field: event, type: string, enum: [CLOCK_IN, CLOCK_OUT], required: true}
+  operations: [check_in_out_api_v1]
+
+- name: TimecardAttribute
+  description: Enumerated attribute associated with a Timecard. The only named reusable schema besides IC-CorrelationID.
+  kind: enum
+  values: [CHECK_IN, CHECK_OUT, BREAK_START, BREAK_END, SKIP_BREAK, CHECK_IN_SUPERVISOR, CHECK_IN_SIGNATURE, CHECK_OUT_SUPERVISOR, CHECK_OUT_SIGNATURE]
+  note: >-
+    Declared in components.schemas but not $ref'd by any operation in the published spec — an
+    orphaned component. Its values imply a richer timecard attribution model (supervisor
+    attestation, signatures, break tracking) than the four fields the Timecard operations expose.
+
+relationships:
+- {from: Client, to: Shift, kind: has_many, via: clientId}
+- {from: Client, to: Facility, kind: has_many, via: X-CLIENT-ID scope}
+- {from: Facility, to: Shift, kind: has_many, via: facilityId, note: implied by client scope on shift operations, explicit on clock-in/out}
+- {from: Shift, to: Client, kind: belongs_to, via: clientId}
+- {from: Shift, to: HealthcareProfessional, kind: has_one, via: healthcareProfessional, note: assigned only on the ShiftAccept webhook; released on ShiftRelease}
+- {from: Shift, to: Timecard, kind: has_one, via: externalShiftId}
+- {from: Shift, to: ClockEvent, kind: has_many, via: shiftId, note: one CLOCK_IN and one CLOCK_OUT per shift}
+- {from: Timecard, to: Shift, kind: belongs_to, via: externalShiftId}
+- {from: Timecard, to: TimecardAttribute, kind: has_many, via: 'undeclared — schema is orphaned in the spec'}
+- {from: ClockEvent, to: HealthcareProfessional, kind: belongs_to, via: nurseId}
+- {from: ClockEvent, to: Facility, kind: belongs_to, via: facilityId}
+- {from: ClockEvent, to: Shift, kind: belongs_to, via: shiftId}
+
+lifecycle:
+  shift_status_transitions:
+    note: >-
+      The shiftStatus enum is declared on both webhook payloads. IntelyCare does not publish a
+      state machine; the transitions below are the ones implied by the two published events and
+      the DELETE operation, not a documented contract.
+    states: [Accepted, Completed, Released, Deleted]
+    observed_events:
+    - {event: ShiftAccept, sets: Accepted}
+    - {event: ShiftRelease, sets: Released}
+    - {operation: shift_delete_api_v1, implies: Deleted}
+    - {state: Completed, emitted_by: 'no published event or operation'}
+
+id_type_inconsistencies:
+- >-
+  externalShiftId is `type: string` on shift create/update and timecard create, but
+  `type: integer` on timecard update and on both webhook payloads.
+- >-
+  Every published example sends numeric ids as JSON strings ("2546810", "456789", "67798")
+  regardless of the declared type.
+- >-
+  HealthcareProfessional.id and .externalId are both described as "identifier of the shift" in
+  the spec, which is almost certainly a copy/paste error in IntelyCare's descriptions.
+- >-
+  ClockEvent.facilityId is described as "Unique identifier for the client", conflating facility
+  and client.
+
+subway: null

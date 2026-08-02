@@ -1,0 +1,95 @@
+# IntelyCare
+
+> IntelyCare is a healthcare workforce platform connecting post-acute and acute-care facilities
+> with W2-employed per-diem nursing professionals ("IntelyPros") — RNs, LPNs and CNAs. It
+> publishes one public API: the External Scheduling API, a REST interface that lets a facility's
+> own scheduling or EHR system create, update and cancel shift requests, exchange timecards for
+> billing reconciliation, and post clock-in/clock-out events. Shift status flows back
+> asynchronously over two HMAC-signed webhooks. IntelyCare acquired CareRev in January 2026 and
+> also operates the Credenza verified-nursing-identity job board.
+
+Generated 2026-08-01 by the API Evangelist enrichment pipeline. IntelyCare publishes no
+/llms.txt on any of its hosts (probed www.intelycare.com, apidocs.intelycare.com,
+api.intelycare.com, credenzahealth.com — all 404, with staffing.intelycare.com returning an SPA
+catch-all). This file is generated from the harvested OpenAPI and the artifacts in this repo.
+
+## Key facts for an agent
+
+- Auth: `X-API-KEY` header (client-scoped) **plus** an `X-CLIENT-ID` header. No OAuth, no OIDC.
+- The API is **write-only** — there is no GET operation. State is learned only from webhooks.
+- **Bulk operations are not supported.** One object per request.
+- **No idempotency contract.** No `Idempotency-Key` header, no documented replay behaviour.
+  Do not auto-retry writes.
+- No rate limits, quotas or throttling headers are documented.
+- Errors are a bare `{"message": "..."}` — not RFC 9457 problem+json. `400`/`422` return an
+  `IC-CorrelationID` uuid header for support.
+- Timestamps are ISO 8601. Trailing `Z` = UTC; **no** trailing `Z` = facility-local time,
+  resolved against the facility's configured timezone.
+- Webhook payloads carry PII: assigned worker name, phone, email and a base64 profile photo.
+
+## APIs
+
+- [IntelyCare External Scheduling API](https://apidocs.intelycare.com/): Create/update/delete
+  shift requests, submit and correct timecards, post clock-in/out events. 6 REST operations,
+  2 webhook events.
+  - Production base URL: `https://api.intelycare.com/external-scheduling/v1/`
+  - Sandbox base URL: `https://api.pre.prod01.platform.intelycare.com/external-scheduling/v1/`
+
+## Operations
+
+- `shift_create_api_v1` — `POST /api/shifts` — create a shift request
+- `shift_update_api_v1` — `PUT /api/shifts/{shiftId}` — update a shift request
+- `shift_delete_api_v1` — `DELETE /api/shifts/{shiftId}` — cancel a shift request
+- `timecard_create_api_v1` — `POST /api/timecards` — submit a timecard
+- `update_timecard_api_v1` — `PUT /api/timecards` — correct a timecard
+- `check_in_out_api_v1` — `POST /api/clockinout/{platform_type}` — post a CLOCK_IN or CLOCK_OUT
+
+## Events (webhooks, signed with HMAC-SHA256 in `X-Signature-IC`)
+
+- `ShiftAccept` — a professional accepted the shift; payload includes the assigned worker
+- `ShiftRelease` — the shift was released back to the marketplace and is unfilled again
+
+## Specs
+
+- [OpenAPI 3.0.0](openapi/intelycare-external-scheduling-openapi.yml): harvested verbatim from
+  the Redoc docs page (IntelyCare serves no /openapi.json on any host)
+- [Original harvested JSON](openapi/_original/intelycare-openapi.json)
+- [AsyncAPI 3.0.0 (derived from the spec's x-webhooks)](asyncapi/intelycare-shift-events-asyncapi.yml)
+- [OpenAPI Overlay of our enhancements](overlays/intelycare-external-scheduling-overlay.yaml)
+
+## Artifacts
+
+- [Authentication profile](authentication/intelycare-authentication.yml)
+- [API conventions](conventions/intelycare-conventions.yml)
+- [Error catalog](errors/intelycare-problem-types.yml)
+- [Data model](data-model/intelycare-data-model.yml)
+- [Lifecycle and versioning](lifecycle/intelycare-lifecycle.yml)
+- [Sandbox and environments](sandbox/intelycare-sandbox.yml)
+- [Standards conformance](conformance/intelycare-conformance.yml)
+- [Request/response examples](examples/intelycare-examples.yml)
+- [Domain security posture](security/intelycare-domain-security.yml)
+- [Well-known probe results](well-known/intelycare-well-known.yml)
+- [Agentic access contracts](agentic-access/intelycare-agentic-access.yml)
+- [Agent skills](skills/_index.yml)
+- [Candidate MCP tool surface (not published by IntelyCare)](mcp/intelycare-mcp.yml)
+
+## Docs
+
+- [API documentation](https://apidocs.intelycare.com/)
+- [API support](mailto:apisupport@intelycare.com)
+- [IntelyCare](https://www.intelycare.com/)
+- [For healthcare facilities](https://www.intelycare.com/facilities/)
+- [Blog](https://www.intelycare.com/blog/nursing-professionals/)
+- [Contact](https://www.intelycare.com/company/contact-us/)
+- [Facility login](https://app.intelycare.com/facility/login)
+- [Terms of use](https://www.intelycare.com/terms-of-use/)
+- [Privacy policy](https://www.intelycare.com/privacy-policy/)
+
+## Not published
+
+IntelyCare publishes none of the following (probed 2026-08-01): SDKs or client libraries in any
+package registry (npm, PyPI, RubyGems, Packagist, NuGet — all zero); a CLI; a Postman
+collection; an MCP server; an A2A agent card at `/.well-known/agent-card.json` or
+`/.well-known/agent.json`; a `security.txt`; an OpenID or OAuth discovery document; a status
+page; a public API changelog; a deprecation or sunset policy; a trust center or published
+compliance certifications; a vulnerability-disclosure program.

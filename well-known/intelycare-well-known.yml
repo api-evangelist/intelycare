@@ -1,0 +1,62 @@
+generated: '2026-08-01'
+method: probed
+source: live HTTP probes of every IntelyCare host in apis.yml + OpenAPI servers[]
+summary: >-
+  No /.well-known/ discovery documents are published on any IntelyCare host. Recording the
+  absence is the honest result — no WellKnown/SecurityTxt pointer is wired in apis.yml because
+  no document was found. NOTE: staffing.intelycare.com answers HTTP 200 with the Angular SPA
+  index.html for EVERY path (including nonsense paths), so its 200s are catch-all false
+  positives, not published documents. api.intelycare.com is behind a WAF that returns 403 to
+  anonymous requests for every path.
+hosts:
+- host: www.intelycare.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/ai-plugin.json, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: apidocs.intelycare.com
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /openapi.json, status: 404}
+  - {path: /swagger.json, status: 404}
+  - {path: /openapi.yaml, status: 404}
+  - {path: /api-docs, status: 404}
+  - {path: /llms.txt, status: 404}
+- host: api.intelycare.com
+  note: WAF returns 403 to all anonymous requests; no anonymous discovery surface
+  documents:
+  - {path: /.well-known/security.txt, status: 403}
+  - {path: /.well-known/openid-configuration, status: 403}
+  - {path: /.well-known/oauth-authorization-server, status: 403}
+  - {path: /.well-known/api-catalog, status: 403}
+  - {path: /.well-known/ai-plugin.json, status: 403}
+  - {path: /.well-known/agent-card.json, status: 403}
+  - {path: /.well-known/agent.json, status: 403}
+  - {path: /openapi.json, status: 403}
+  - {path: /llms.txt, status: 403}
+- host: staffing.intelycare.com
+  note: >-
+    SPA catch-all — returns 200 text/html (Angular index.html) for every path including
+    /.well-known/this-path-does-not-exist-xyz123. All 200s below are FALSE POSITIVES.
+  documents:
+  - {path: /.well-known/security.txt, status: 200, content_type: text/html, valid: false}
+  - {path: /.well-known/agent-card.json, status: 200, content_type: text/html, valid: false}
+  - {path: /.well-known/agent.json, status: 200, content_type: text/html, valid: false}
+  - {path: /.well-known/openid-configuration, status: 200, content_type: text/html, valid: false}
+  - {path: /.well-known/api-catalog, status: 200, content_type: text/html, valid: false}
+  - {path: /llms.txt, status: 200, content_type: text/html, valid: false}
+- host: credenzahealth.com
+  note: IntelyCare-owned Credenza nursing-identity job board
+  documents:
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /.well-known/agent-card.json, status: 404}
+  - {path: /.well-known/agent.json, status: 404}
+  - {path: /llms.txt, status: 404}
+  - {path: /openapi.json, status: 404}

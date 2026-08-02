@@ -1,0 +1,1090 @@
+{
+  "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "//api.intelycare.com/external-scheduling/v1/",
+      "description": "Default server"
+    },
+    {
+      "url": "//api.pre.prod01.platform.intelycare.com/external-scheduling/v1/",
+      "description": "Sandbox server"
+    }
+  ],
+  "info": {
+    "description": "# Introduction\nWelcome to the IntelyCare API documentation, your gateway to seamless integration with the IntelyCare Staffing platform. Our REST API empowers clients to efficiently create shift requests, enabling a streamlined process for managing workforce scheduling. By leveraging this API, you can enhance your systems with real-time information about shift status, including when a shift has been filled and details about the assigned IntelyPro.\n\n# Overview\n\nThe IntelyCare API facilitates communication between your application and the IntelyCare platform, enabling a seamless exchange of data. This documentation serves as a comprehensive guide to help you integrate your systems with our powerful RESTful API. All requests and responses are JSON-encoded, and use standard HTTP response codes and authentication schemes. Bulk operations are not supported. You can work with only one object per request.\n\nTo get started with the IntelyCare API, refer to the detailed documentation below. We provide comprehensive information on authentication, endpoints, request and response formats, and error handling.\n\n# Authentication\n\nIntelyCare offers the following authentication schemes:\n\n| Type                      | Usage       | Description                                                    | Example                                                                   |\n| ------------------------- | ----------- | -------------------------------------------------------------- | ------------------------------------------------------------------------- |\n| apiKey                    | REST APIs   | Required as `X-API-KEY` header for all RESTful calls           | `d1015a83-9f5f-4a4d-b5fd-4e756ed1d282`                                    |\n| HMAC Signature (SHA256)   | Webhooks    | Provided as `X-Signature-IC` header on all webhooks            | `bcc151a55acf3d93c097e768f2b96f82d91b56d6fe2a102818b70f0fdfd0ccd1`        |\n\n> :memo: **Note:** API Keys are tied to individual clients and cannot be used outside their provided scope\n\n# Support and Assistance\n\nIf you have any questions, encounter issues, or require assistance during the integration process, our dedicated support team is here to help. Reach out to apisupport@intelycare.com for prompt and reliable assistance.\n\nThank you for choosing IntelyCare. Let's build a more efficient and connected healthcare workforce together!\n",
+    "version": "1.0.0",
+    "title": "IntelyCare API Documentation",
+    "contact": {
+      "name": "API Support",
+      "email": "apisupport@intelycare.com"
+    },
+    "x-logo": {
+      "url": "https://www.intelycare.com/wp-content/uploads/2023/08/ic-logo-2-1.svg",
+      "altText": "IntelyCare Logo"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "Shift",
+      "description": "Integrate with the IntelyCare platform to create shift requests effortlessly. Our API allows you to programmatically submit and manage shift requests, providing you with the flexibility to adapt to your workforce scheduling needs."
+    },
+    {
+      "name": "Timecard",
+      "description": "Simplify billing reconciliation by exchanging timecard information seamlessly. Our API supports the exchange of accurate timekeeping data, ensuring a smooth and efficient process for both you and the IntelyCare platform."
+    },
+    {
+      "name": "Webhook Events",
+      "description": "Real-time updates on the status of submitted shifts. The API response includes valuable information about the assigned IntelyPro, giving you insights into the workforce handling each shift."
+    },
+    {
+      "name": "Check In / Check Out",
+      "description": "Easily manage check-in and check-out events for shifts. Our API allows you to programmatically submit and manage check-in and check-out events, providing you with the flexibility to adapt to your workforce scheduling needs."
+    }
+  ],
+  "x-tagGroups": [
+    {
+      "name": "APIs",
+      "tags": [
+        "Shift",
+        "Timecard",
+        "Webhook Events",
+        "Check In / Check Out"
+      ]
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-KEY"
+      },
+      "HMACSignature": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Signature-IC"
+      }
+    },
+    "responses": {
+      "UnauthorizedError": {
+        "description": "Unauthorized",
+        "headers": {
+          "WWW_Authenticate": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "application/json": {
+            "examples": {
+              "foo": {
+                "value": {
+                  "message": "Unauthorized"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "TimecardAttribute": {
+        "description": "Attribute associated with Timecard",
+        "type": "string",
+        "enum": [
+          "CHECK_IN",
+          "CHECK_OUT",
+          "BREAK_START",
+          "BREAK_END",
+          "SKIP_BREAK",
+          "CHECK_IN_SUPERVISOR",
+          "CHECK_IN_SIGNATURE",
+          "CHECK_OUT_SUPERVISOR",
+          "CHECK_OUT_SIGNATURE"
+        ]
+      },
+      "IC-CorrelationID": {
+        "description": "Unique uuid that can be used for debugging purposes",
+        "type": "string"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    },
+    {
+      "HMACSignature": []
+    }
+  ],
+  "paths": {
+    "/api/shifts": {
+      "post": {
+        "tags": [
+          "Shift"
+        ],
+        "operationId": "shift_create_api_v1",
+        "summary": "Create",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-API-KEY",
+            "in": "header",
+            "description": "API key issued to a specific client. This can only be used to access data within the client scope.",
+            "example": "d1015a839f5f",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CLIENT-ID",
+            "in": "header",
+            "description": "Intelycare's Unique identifier of the client.",
+            "example": "1234",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "externalShiftId",
+                  "shiftStartTime",
+                  "shiftEndTime",
+                  "shiftUnit",
+                  "healthcareProfessionalType",
+                  "shiftSource"
+                ],
+                "properties": {
+                  "externalShiftId": {
+                    "description": "Unique identifier for the shift",
+                    "type": "string"
+                  },
+                  "shiftStartTime": {
+                    "description": "Shift start date/time can be in the UTC timezone in ISO 8601 format ex. \"2024-01-24T05:04:34Z\" OR Local Time by omitting the \"Z\" at the end. ex. \"2024-01-24T05:04:34\". The local time will be based on the configuration of the facility in the IntelyCare system.",
+                    "type": "string",
+                    "example": "UTC: 2024-01-24T05:04:34Z, local time: 2024-01-24T05:04:34"
+                  },
+                  "shiftEndTime": {
+                    "description": "Shift end date/time can be in the UTC timezone in ISO 8601 format ex. \"2024-01-24T05:04:34Z\" OR Local Time by omitting the \"Z\" at the end. ex. \"2024-01-24T05:04:34\". The local time will be based on the configuration of the facility in the IntelyCare system.",
+                    "type": "string",
+                    "example": "UTC: 2024-01-24T05:04:34Z, local time: 2024-01-24T05:04:34"
+                  },
+                  "shiftUnit": {
+                    "description": "Facility unit where the care should be delivered by the healthcare professional",
+                    "type": "string"
+                  },
+                  "healthcareProfessionalType": {
+                    "description": "Healthcare professional qualification needed for the given shift. For example: \u201cCNA\u201d,\u201dLPN\u201d,\u201dRN\u201d.",
+                    "type": "string"
+                  },
+                  "shiftSource": {
+                    "description": "Shift origination point",
+                    "type": "string"
+                  },
+                  "timezone": {
+                    "description": "Timezone for the shifts",
+                    "type": "string"
+                  },
+                  "shiftBoostPercentage": {
+                    "description": "Percentage amount for boosting the shift",
+                    "type": "integer",
+                    "default": 0
+                  }
+                }
+              },
+              "example": {
+                "externalShiftId": "2546810",
+                "shiftStartTime": "2024-01-16T23:00:00",
+                "shiftEndTime": "2024-01-17T07:00:00",
+                "shiftUnit": "1st Floor",
+                "healthcareProfessionalType": "LPN",
+                "shiftSource": "qwerty",
+                "shiftBoostPercentage": 10,
+                "timezone": "ET"
+              },
+              "x-codeSamples": [
+                {
+                  "lang": "cURL",
+                  "label": "CLI",
+                  "source": "curl --request POST \\\n--url 'https://data.apiexample.com/api/example/batch_query/json?format=json' \\\n--header 'content-type: application/octet-stream: ' \\\n--data '{}'\n"
+                }
+              ]
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "clientId": 1234,
+                    "internalShiftId": 10174202,
+                    "externalShiftId": "2546810",
+                    "shiftStartTime": "2024-01-16T23:00:00",
+                    "shiftEndTime": "2024-01-17T07:00:00",
+                    "shiftDate": "2024-01-16",
+                    "shiftUnit": "1st Floor",
+                    "healthcareProfessionalType": "LPN",
+                    "shiftSource": "qwerty",
+                    "shiftBoostPercentage": 10,
+                    "timezone": "ET"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request",
+            "headers": {
+              "IC-CorrelationID": {
+                "$ref": "#/components/schemas/IC-CorrelationID"
+              }
+            },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "foo": {
+                    "value": {
+                      "message": "Invalid input- Shift end time must be later than the shift start time."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          },
+          "422": {
+            "description": "422 Unprocessable Entity",
+            "headers": {
+              "IC-CorrelationID": {
+                "$ref": "#/components/schemas/IC-CorrelationID"
+              }
+            },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "foo": {
+                    "value": {
+                      "message": "Invalid input- shiftEndTime must be a date in the present or in the future."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/shifts/{shiftId}": {
+      "put": {
+        "tags": [
+          "Shift"
+        ],
+        "operationId": "shift_update_api_v1",
+        "summary": "Update",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-API-KEY",
+            "in": "header",
+            "description": "API key issued to a specific client. This can only be used to access data within the client scope.",
+            "example": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CLIENT-ID",
+            "in": "header",
+            "description": "Intelycare's Unique identifier of the client.",
+            "example": "1234",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shiftId",
+            "in": "path",
+            "description": "Intelycare's Unique identifier of the shift.",
+            "example": "10174202",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "externalShiftId",
+                  "shiftStartTime",
+                  "shiftEndTime",
+                  "shiftUnit",
+                  "healthcareProfessionalType",
+                  "shiftSource"
+                ],
+                "properties": {
+                  "shiftStartTime": {
+                    "description": "Shift start date/time can be in the UTC timezone in ISO 8601 format ex. \"2024-01-24T05:04:34Z\" OR Local Time by omitting the \"Z\" at the end. ex. \"2024-01-24T05:04:34\". The local time will be based on the configuration of the facility in the IntelyCare system.",
+                    "type": "string",
+                    "example": "UTC: 2024-01-24T05:04:34Z, local time: 2024-01-24T05:04:34"
+                  },
+                  "shiftEndTime": {
+                    "description": "Shift end date/time can be in the UTC timezone in ISO 8601 format ex. \"2024-01-24T05:04:34Z\" OR Local Time by omitting the \"Z\" at the end. ex. \"2024-01-24T05:04:34\". The local time will be based on the configuration of the facility in the IntelyCare system.",
+                    "type": "string",
+                    "example": "UTC: 2024-01-24T05:04:34Z, local time: 2024-01-24T05:04:34"
+                  },
+                  "shiftUnit": {
+                    "description": "Facility unit where the care should be delivered by the healthcare professional",
+                    "type": "string"
+                  },
+                  "healthcareProfessionalType": {
+                    "description": "Healthcare professional qualification needed for the given shift. For example: \u201cCNA\u201d,\u201dLPN\u201d,\u201dRN\u201d.",
+                    "type": "string"
+                  },
+                  "shiftSource": {
+                    "description": "Shift origination point",
+                    "type": "string"
+                  },
+                  "shiftBoostPercentage": {
+                    "description": "Percentage amount for boosting the shift",
+                    "type": "integer",
+                    "default": 0
+                  },
+                  "timezone": {
+                    "description": "Timezone for the shifts",
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "shiftStartTime": "2024-01-16T23:00:00",
+                "shiftEndTime": "2024-01-17T07:00:00",
+                "shiftUnit": "1st Floor",
+                "healthcareProfessionalType": "LPN",
+                "shiftSource": "qwerty",
+                "shiftBoostPercentage": 10,
+                "timezone": "ET"
+              },
+              "x-codeSamples": [
+                {
+                  "lang": "cURL",
+                  "label": "CLI",
+                  "source": "curl --request POST \\\n--url 'https://data.apiexample.com/api/example/batch_query/json?format=json' \\\n--header 'content-type: application/octet-stream: ' \\\n--data '{}'\n"
+                }
+              ]
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "clientId": 1234,
+                    "internalShiftId": 10174202,
+                    "externalShiftId": "2546810",
+                    "shiftStartTime": "2024-01-16T23:00:00",
+                    "shiftEndTime": "2024-01-17T07:00:00",
+                    "shiftDate": "2024-01-16",
+                    "shiftUnit": "1st Floor",
+                    "healthcareProfessionalType": "LPN",
+                    "shiftSource": "qwerty",
+                    "shiftBoostPercentage": 10,
+                    "timezone": "ET"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request",
+            "headers": {
+              "IC-CorrelationID": {
+                "$ref": "#/components/schemas/IC-CorrelationID"
+              }
+            },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "foo": {
+                    "value": {
+                      "message": "Shift ID is not valid!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Shift"
+        ],
+        "operationId": "shift_delete_api_v1",
+        "summary": "Delete",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-API-KEY",
+            "in": "header",
+            "description": "API key issued to a specific client. This can only be used to access data within the client scope.",
+            "example": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CLIENT-ID",
+            "in": "header",
+            "description": "Intelycare's Unique identifier of the client.",
+            "example": "1234",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "shiftId",
+            "in": "path",
+            "description": "Intelycare's Unique identifier of the shift.",
+            "example": "10174202",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "data": {
+                    "internalShiftId": 10174202,
+                    "shiftDate": "2024-01-16",
+                    "removed": 1
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "400 Bad Request",
+            "headers": {
+              "IC-CorrelationID": {
+                "$ref": "#/components/schemas/IC-CorrelationID"
+              }
+            },
+            "content": {
+              "application/json": {
+                "examples": {
+                  "foo": {
+                    "value": {
+                      "message": "Shift ID is not valid!"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/api/timecards": {
+      "post": {
+        "tags": [
+          "Timecard"
+        ],
+        "operationId": "timecard_create_api_v1",
+        "summary": "Create",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-API-KEY",
+            "in": "header",
+            "description": "API key issued to a specific client. This can only be used to access data within the client scope.",
+            "example": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CLIENT-ID",
+            "in": "header",
+            "description": "Intelycare's Unique identifier of the client.",
+            "example": "1234",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "externalShiftId",
+                  "checkIn",
+                  "checkOut",
+                  "breakDuration"
+                ],
+                "properties": {
+                  "externalShiftId": {
+                    "description": "Unique identifier for the shift",
+                    "type": "string"
+                  },
+                  "checkIn": {
+                    "description": "Shift check-in timestamp in ISO 8601 format and in UTC timezone",
+                    "type": "string",
+                    "example": "2024-01-17T07:00:00"
+                  },
+                  "checkOut": {
+                    "description": "Shift check-out timestamp in ISO 8601 format and in UTC timezone",
+                    "type": "string",
+                    "example": "2024-01-17T15:00:00"
+                  },
+                  "breakDuration": {
+                    "description": "Duration (in minutes) of shift break",
+                    "type": "integer",
+                    "example": 30
+                  }
+                }
+              },
+              "example": {
+                "externalShiftId": "2546810",
+                "checkIn": "2024-01-17T07:00:00",
+                "checkOut": "2024-01-17T15:00:00",
+                "breakDuration": 30
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "clientId": 1234,
+                  "externalShiftId": "2546810",
+                  "checkIn": "2024-01-17T07:00:00",
+                  "checkOut": "2024-01-17T15:00:00",
+                  "breakDuration": 30,
+                  "errors": null,
+                  "createdAt": "2024-01-17T15:01:00"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Timecard"
+        ],
+        "operationId": "update_timecard_api_v1",
+        "summary": "Update",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-API-KEY",
+            "in": "header",
+            "description": "API key issued to a specific client. This can only be used to access data within the client scope.",
+            "example": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CLIENT-ID",
+            "in": "header",
+            "description": "Intelycare's Unique identifier of the client.",
+            "example": "1234",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "externalShiftId",
+                  "checkIn",
+                  "checkOut",
+                  "breakDuration"
+                ],
+                "properties": {
+                  "externalShiftId": {
+                    "description": "Unique identifier for the shift",
+                    "type": "integer"
+                  },
+                  "checkIn": {
+                    "description": "Shift check-in timestamp in ISO 8601 format and in UTC timezone",
+                    "type": "string",
+                    "example": "2024-01-17T07:00:00"
+                  },
+                  "checkOut": {
+                    "description": "Shift check-out timestamp in ISO 8601 format and in UTC timezone",
+                    "type": "string",
+                    "example": "2024-01-17T15:00:00"
+                  },
+                  "breakDuration": {
+                    "description": "Duration (in minutes) of shift break",
+                    "type": "integer",
+                    "example": 30
+                  }
+                }
+              },
+              "example": {
+                "externalShiftId": "2546810",
+                "checkIn": "2024-01-17T07:00:00",
+                "checkOut": "2024-01-17T15:00:00",
+                "breakDuration": 30
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "clientId": 1234,
+                  "externalShiftId": "2546810",
+                  "checkIn": "2024-01-17T07:00:00",
+                  "checkOut": "2024-01-17T15:00:00",
+                  "breakDuration": 30,
+                  "errors": null,
+                  "updatedAt": "2024-01-17T15:01:00"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    },
+    "/api/clockinout/{platform_type}": {
+      "post": {
+        "tags": [
+          "Check In / Check Out"
+        ],
+        "operationId": "check_in_out_api_v1",
+        "summary": "Check-in / Check-out",
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-API-KEY",
+            "in": "header",
+            "description": "API key issued to a specific client. This can only be used to access data within the client scope.",
+            "example": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-CLIENT-ID",
+            "in": "header",
+            "description": "Intelycare's Unique identifier of the client.",
+            "example": "1234",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "platform_type",
+            "in": "path",
+            "description": "Intelycare's Unique identifier of the platform using this API.",
+            "example": "intelycare",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "nurseId",
+                  "clockTime",
+                  "shiftId",
+                  "facilityId",
+                  "event"
+                ],
+                "properties": {
+                  "nurseId": {
+                    "description": "Unique identifier for the caregiver",
+                    "type": "integer",
+                    "example": 67798
+                  },
+                  "clockTime": {
+                    "description": "Shift check-in or check-out timestamp in ISO 8601 format and in UTC timezone",
+                    "type": "string",
+                    "example": "2024-02-23T07:34:00.000Z"
+                  },
+                  "shiftId": {
+                    "description": "Unique identifier for the shift",
+                    "type": "integer",
+                    "example": 98847575
+                  },
+                  "facilityId": {
+                    "description": "Unique identifier for the client",
+                    "type": "integer",
+                    "example": 77666555
+                  },
+                  "event": {
+                    "description": "The type of event to be processed",
+                    "type": "string",
+                    "enum": [
+                      "CLOCK_OUT",
+                      "CLOCK_IN"
+                    ]
+                  }
+                }
+              },
+              "example": {
+                "nurseId": "67798",
+                "clockTime": "2024-02-23T07:34:00.000Z",
+                "shiftId": "98847575",
+                "facilityId": "77666555",
+                "event": "CLOCK_IN"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "200 OK",
+            "content": {
+              "application/json": {
+                "example": {
+                  "nurseId": "67798",
+                  "clockTime": "2024-02-23T07:34:00.000Z",
+                  "shiftId": "98847575",
+                  "facilityId": "77666555",
+                  "event": "CLOCK_IN",
+                  "additionalProperties": {
+                    "CLOCK_IN": {
+                      "shiftId": 98847575,
+                      "message": "Thanks for Checking in.",
+                      "providerId": 67798,
+                      "discipline": null,
+                      "dateCreated": "2024-02-23T07:34:00.000Z",
+                      "clientId": 77666555,
+                      "checkIn": null,
+                      "checkOut": null,
+                      "isSuccess": null
+                    },
+                    "CLOCK_OUT": {
+                      "shiftId": 98847575,
+                      "message": "Thanks for Checking out.",
+                      "providerId": 67798,
+                      "discipline": null,
+                      "dateCreated": "2024-02-23T07:34:00.000Z",
+                      "clientId": 1077,
+                      "checkIn": "2024-02-23T07:34:00.000Z",
+                      "checkOut": null,
+                      "isSuccess": null
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/UnauthorizedError"
+          }
+        }
+      }
+    }
+  },
+  "x-webhooks": {
+    "ShiftAccept": {
+      "post": {
+        "tags": [
+          "Webhook Events"
+        ],
+        "operationId": "shift_accept_webhook_v1",
+        "summary": "Shift Accept",
+        "description": "Webhook event for shift accept",
+        "security": [
+          {
+            "HMACSignature": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Signature-IC",
+            "in": "header",
+            "description": "The hash signature of the payload. IntelyCare webhooks uses a HMAC hex digest (SHA256) to compute the signature of the body payload with the webhook secret.",
+            "example": "a0b1c1d2e3f5a8b13c21d34e55f89a144b233c377d610e987f1597a2584b4181",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Webhook event for shift accept",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "clientId",
+                  "externalShiftId",
+                  "shiftStatus",
+                  "healthcareProfessional",
+                  "statusTimestamp"
+                ],
+                "properties": {
+                  "clientId": {
+                    "description": "Unique identifier of the client",
+                    "type": "integer"
+                  },
+                  "externalShiftId": {
+                    "description": "Unique identifier for the shift",
+                    "type": "integer"
+                  },
+                  "shiftStatus": {
+                    "description": "Status of the shift",
+                    "type": "string",
+                    "enum": [
+                      "Accepted",
+                      "Completed",
+                      "Released",
+                      "Deleted"
+                    ]
+                  },
+                  "healthcareProfessional": {
+                    "description": "Healthcare Professional object containing all information about the assigned worker",
+                    "type": "object",
+                    "required": [
+                      "id",
+                      "externalId",
+                      "lastName",
+                      "firstName",
+                      "healthcareProfessionalType",
+                      "phoneNumber",
+                      "email"
+                    ],
+                    "optional": [
+                      "profilePicture"
+                    ],
+                    "properties": {
+                      "id": {
+                        "description": "Unique identifier of the shift",
+                        "type": "integer"
+                      },
+                      "externalId": {
+                        "description": "External identifier for the shift",
+                        "type": "integer"
+                      },
+                      "lastName": {
+                        "description": "Last name of the assigned worker",
+                        "type": "string"
+                      },
+                      "firstName": {
+                        "description": "First name of the assigned worker",
+                        "type": "string"
+                      },
+                      "healthcareProfessionalType": {
+                        "description": "Healthcare professional qualification needed for the given shift",
+                        "type": "string"
+                      },
+                      "phoneNumber": {
+                        "description": "Phone number for the assigned worker",
+                        "type": "string",
+                        "example": "(800) 900-1234"
+                      },
+                      "email": {
+                        "description": "Email for the assigned worker",
+                        "type": "string"
+                      },
+                      "profilePicture": {
+                        "description": "Base64 encoded string of the assigned workers profile image",
+                        "type": "string",
+                        "example": "XfPy2KmGiZTQySSS3OHCWw=="
+                      }
+                    }
+                  },
+                  "statusTimestamp": {
+                    "description": "Status timestamp in ISO 8601 format and in UTC timezone",
+                    "type": "string",
+                    "example": "2024-01-17T15:01:00"
+                  }
+                }
+              },
+              "example": {
+                "clientId": 1234,
+                "externalShiftId": "2546810",
+                "shiftStatus": "Accepted",
+                "healthcareProfessional": {
+                  "id": "456789",
+                  "externalId": "111124",
+                  "lastName": "Nightengale",
+                  "firstName": "Florence",
+                  "healthcareProfessionalType": "LPN",
+                  "phoneNumber": "(800) 900-1234",
+                  "email": "florence.nightengale@gmail.com",
+                  "profilePicture": "XfPy2KmGiZTQySSS3OHCWw=="
+                },
+                "statusTimestamp": "2024-01-17T15:01:00"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ShiftRelease": {
+      "post": {
+        "tags": [
+          "Webhook Events"
+        ],
+        "operationId": "shift_release_webhook_v1",
+        "summary": "Shift Release",
+        "description": "Webhook event for shift release",
+        "security": [
+          {
+            "HMACSignature": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "X-Signature-IC",
+            "in": "header",
+            "description": "The hash signature of the payload. IntelyCare webhooks uses a HMAC hex digest (SHA256) to compute the signature of the body payload with the webhook secret.",
+            "example": "a0b1c1d2e3f5a8b13c21d34e55f89a144b233c377d610e987f1597a2584b4181",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Webhook event for shift release",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "clientId",
+                  "externalShiftId",
+                  "shiftStatus",
+                  "statusTimestamp"
+                ],
+                "properties": {
+                  "clientId": {
+                    "description": "Unique identifier of the client",
+                    "type": "integer"
+                  },
+                  "externalShiftId": {
+                    "description": "Unique identifier for the shift",
+                    "type": "integer"
+                  },
+                  "shiftStatus": {
+                    "description": "Status of the shift",
+                    "type": "string",
+                    "enum": [
+                      "Accepted",
+                      "Completed",
+                      "Released",
+                      "Deleted"
+                    ]
+                  },
+                  "statusTimestamp": {
+                    "description": "Status timestamp in ISO 8601 format and in UTC timezone",
+                    "type": "string",
+                    "example": "2024-01-17T15:01:00"
+                  }
+                }
+              },
+              "example": {
+                "clientId": 1234,
+                "externalShiftId": "2546810",
+                "shiftStatus": "Released",
+                "statusTimestamp": "2024-01-17T15:01:00"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

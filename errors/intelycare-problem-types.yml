@@ -1,0 +1,74 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/intelycare-external-scheduling-openapi.yml
+docs: https://apidocs.intelycare.com/
+format: custom-json
+rfc9457: false
+envelope:
+  content_type: application/json
+  fields:
+    message: Human-readable error string — the only field documented in any error example.
+  headers:
+  - name: IC-CorrelationID
+    on: [400, 422]
+    description: Unique uuid that can be used for debugging purposes.
+  - name: WWW_Authenticate
+    on: [401]
+    description: >-
+      Declared on the shared UnauthorizedError response. Spelled with an underscore
+      (WWW_Authenticate) in the published spec rather than the RFC 9110 WWW-Authenticate.
+note: >-
+  IntelyCare does not publish a named/typed error registry — there are no error codes, no `type`
+  URIs and no application/problem+json media type. The catalogue below is DERIVED from the
+  4xx responses and their examples in the published OpenAPI. Titles are taken verbatim from
+  the spec response descriptions; the example messages are the provider's own.
+
+problems:
+- status: 400
+  title: 400 Bad Request
+  media_type: application/json
+  headers: [IC-CorrelationID]
+  example_message: Invalid input- Shift end time must be later than the shift start time.
+  remediation: >-
+    Validate the request body before sending — in particular that shiftEndTime is later than
+    shiftStartTime and that all required fields are present.
+  source_operations:
+  - openapi/intelycare-external-scheduling-openapi.yml#shift_create_api_v1
+  - openapi/intelycare-external-scheduling-openapi.yml#shift_update_api_v1
+  - openapi/intelycare-external-scheduling-openapi.yml#shift_delete_api_v1
+
+- status: 401
+  title: Unauthorized
+  media_type: application/json
+  headers: [WWW_Authenticate]
+  example_message: Unauthorized
+  remediation: >-
+    Send a valid X-API-KEY header together with the matching X-CLIENT-ID. API keys are scoped to
+    a single client and cannot be used outside that scope, so a key valid for another client
+    also returns 401.
+  shared_component: '#/components/responses/UnauthorizedError'
+  source_operations:
+  - openapi/intelycare-external-scheduling-openapi.yml#shift_create_api_v1
+  - openapi/intelycare-external-scheduling-openapi.yml#shift_update_api_v1
+  - openapi/intelycare-external-scheduling-openapi.yml#shift_delete_api_v1
+  - openapi/intelycare-external-scheduling-openapi.yml#timecard_create_api_v1
+  - openapi/intelycare-external-scheduling-openapi.yml#update_timecard_api_v1
+  - openapi/intelycare-external-scheduling-openapi.yml#check_in_out_api_v1
+
+- status: 422
+  title: 422 Unprocessable Entity
+  media_type: application/json
+  headers: [IC-CorrelationID]
+  example_message: Invalid input- shiftEndTime must be a date in the present or in the future.
+  remediation: >-
+    The body parsed but failed a business rule — e.g. a shift end time in the past. Correct the
+    semantic violation rather than the syntax.
+  source_operations:
+  - openapi/intelycare-external-scheduling-openapi.yml#shift_create_api_v1
+
+gaps:
+- No 403, 404, 409, 429 or 5xx responses are declared anywhere in the spec.
+- No machine-readable error code or `type` URI — only a free-text `message`.
+- Timecard and clock-in/out operations declare only 200 and 401; validation failures on those
+  operations are undocumented.
+- IC-CorrelationID is not returned on 200 or 401 responses, only 400/422.

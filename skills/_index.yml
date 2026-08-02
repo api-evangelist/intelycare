@@ -1,0 +1,29 @@
+generated: '2026-08-01'
+method: generated
+source: openapi/intelycare-external-scheduling-openapi.yml
+note: >-
+  Packaged Agent Skills for the IntelyCare External Scheduling API. No provider-published
+  AGENTS.md or skill files were found on any IntelyCare host, so these are generated. Every step
+  is grounded in an operationId that exists verbatim in the harvested OpenAPI; the two skills
+  between them cover all six REST operations and both webhook events.
+skills:
+- file: intelycare-request-and-track-a-shift.md
+  name: Request and track an IntelyCare shift
+  description: >-
+    Create a per-diem nursing shift request, track it to fill via the ShiftAccept/ShiftRelease
+    webhooks, and amend or cancel it.
+  api: openapi/intelycare-external-scheduling-openapi.yml
+  operations: [shift_create_api_v1, shift_update_api_v1, shift_delete_api_v1]
+  events: [shift_accept_webhook_v1, shift_release_webhook_v1]
+- file: intelycare-record-time-and-reconcile.md
+  name: Record time worked and reconcile an IntelyCare shift for billing
+  description: >-
+    Post clock-in/clock-out punches for an assigned professional, then submit and correct the
+    timecard that drives billing reconciliation.
+  api: openapi/intelycare-external-scheduling-openapi.yml
+  operations: [check_in_out_api_v1, timecard_create_api_v1, update_timecard_api_v1]
+coverage:
+  rest_operations_total: 6
+  rest_operations_covered: 6
+  webhook_events_total: 2
+  webhook_events_covered: 2

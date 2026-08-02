@@ -1,0 +1,124 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the IntelyCare External Scheduling API
+  version: 1.0.0
+  x-generated: '2026-08-01'
+  x-method: generated
+  x-source: openapi/intelycare-external-scheduling-openapi.yml
+  x-note: >-
+    Non-destructive OpenAPI Overlay 1.0.0 capturing API Evangelist enrichment of IntelyCare's
+    published spec. Every action below either adds an x- extension or repairs a defect observed
+    in the original document. The harvested spec in openapi/ is never mutated.
+extends: openapi/intelycare-external-scheduling-openapi.yml
+
+actions:
+  # ---- provenance ----
+  - target: $.info
+    description: Record enrichment provenance and the artifacts derived from this spec.
+    update:
+      x-apievangelist-harvested: '2026-08-01'
+      x-apievangelist-source: https://apidocs.intelycare.com/
+      x-apievangelist-harvest-method: >-
+        Extracted verbatim from the __redoc_state JSON embedded in the Redoc v2.4.0 standalone
+        docs page. IntelyCare serves no /openapi.json, /swagger.json or /openapi.yaml on any host.
+      x-apievangelist-artifacts:
+        conventions: conventions/intelycare-conventions.yml
+        errors: errors/intelycare-problem-types.yml
+        data-model: data-model/intelycare-data-model.yml
+        asyncapi: asyncapi/intelycare-shift-events-asyncapi.yml
+        authentication: authentication/intelycare-authentication.yml
+        sandbox: sandbox/intelycare-sandbox.yml
+        skills: skills/_index.yml
+
+  # ---- server URLs: the published servers[] are protocol-relative ----
+  - target: $.servers[0]
+    description: >-
+      The published spec declares '//api.intelycare.com/external-scheduling/v1/' — a
+      protocol-relative URL. OpenAPI server URLs should carry an explicit scheme so a generated
+      client does not inherit the docs page's protocol.
+    update:
+      x-apievangelist-absolute-url: https://api.intelycare.com/external-scheduling/v1/
+      x-environment: production
+
+  - target: $.servers[1]
+    description: Same protocol-relative defect on the sandbox server.
+    update:
+      x-apievangelist-absolute-url: https://api.pre.prod01.platform.intelycare.com/external-scheduling/v1/
+      x-environment: sandbox
+
+  # ---- tag descriptions already exist; add the missing operational semantics ----
+  - target: $.paths['/api/shifts'].post
+    description: Flag the create-shift operation's agent/automation semantics.
+    update:
+      x-agentic-access:
+        action-class: acting
+        consequence: write
+        audit: required
+      x-apievangelist-note: >-
+        externalShiftId is a client-supplied natural key. IntelyCare documents no
+        Idempotency-Key contract, so retry behaviour on a duplicate externalShiftId is
+        undefined — confirm with apisupport@intelycare.com before building retries.
+
+  - target: $.paths['/api/shifts/{shiftId}'].delete
+    description: Mark shift cancellation as the destructive operation in this API.
+    update:
+      x-agentic-access:
+        action-class: acting
+        consequence: write
+        escalation:
+          human-in-the-loop: recommended
+        audit: required
+      x-apievangelist-note: >-
+        Deleting a shift withdraws a live staffing request that a nursing professional may
+        already have accepted.
+
+  - target: $.paths['/api/timecards'].post
+    description: Timecards drive billing reconciliation.
+    update:
+      x-apievangelist-note: >-
+        Timecard submission feeds billing reconciliation. Errors here have financial
+        consequences for both the facility and the assigned worker.
+
+  # ---- defects observed in the published spec, recorded not corrected ----
+  - target: $.components
+    description: Record the schema-completeness gaps found in the published document.
+    update:
+      x-apievangelist-spec-gaps:
+        - >-
+          No 2xx response in the entire spec declares a schema — every 200 is example-only, so
+          no client can be generated with typed responses.
+        - >-
+          components.schemas.TimecardAttribute is declared but never $ref'd by any operation
+          (orphaned component). Its 9 enum values imply supervisor attestation and signature
+          capture that the Timecard operations do not expose.
+        - >-
+          The 401 UnauthorizedError response declares a header named 'WWW_Authenticate' with an
+          underscore; the RFC 9110 header is 'WWW-Authenticate' with a hyphen.
+        - >-
+          externalShiftId is typed string on shift create/update and timecard create, but
+          integer on timecard update and on both webhook payloads.
+        - >-
+          The x-codeSamples on the shift create and update operations are placeholder cURL
+          snippets pointing at 'https://data.apiexample.com/api/example/batch_query/json' with
+          'content-type: application/octet-stream' — copied boilerplate, not IntelyCare calls.
+        - >-
+          HealthcareProfessional.id and .externalId are both described as "identifier of the
+          shift"; ClockEvent.facilityId is described as "Unique identifier for the client".
+        - >-
+          No 403, 404, 409, 429 or 5xx responses are declared on any operation.
+        - >-
+          Timecard and clock-in/out operations declare only 200 and 401 — no validation failure
+          response, despite four required fields each.
+
+  - target: $.info
+    description: Cross-reference the event surface, which the OpenAPI carries only as x-webhooks.
+    update:
+      x-apievangelist-event-surface:
+        style: webhooks
+        declared_as: info-level x-webhooks (Redoc extension), not OpenAPI 3.1 top-level webhooks
+        events: [ShiftAccept, ShiftRelease]
+        signature: HMAC-SHA256 hex digest in X-Signature-IC
+        asyncapi_projection: asyncapi/intelycare-shift-events-asyncapi.yml
+        note: >-
+          Upgrading the document to OpenAPI 3.1 would let these move to the standard top-level
+          `webhooks` object instead of a vendor extension.

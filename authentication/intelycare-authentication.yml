@@ -1,0 +1,86 @@
+generated: '2026-08-01'
+method: searched
+source: openapi/intelycare-external-scheduling-openapi.yml
+docs: https://apidocs.intelycare.com/
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+  oauth2_flows: []
+  oidc: false
+  mutual_tls: false
+  note: >-
+    Two apiKey-typed schemes serve two different directions. ApiKeyAuth (X-API-KEY) authenticates
+    the CLIENT calling IntelyCare on all six REST operations. HMACSignature (X-Signature-IC)
+    authenticates INTELYCARE calling the client's webhook receiver — it is modelled as an apiKey
+    scheme in the OpenAPI, but it is not a static key: it is an HMAC hex digest (SHA256) of the
+    body payload computed with the webhook secret, and must be recomputed and compared per
+    request.
+schemes:
+- name: ApiKeyAuth
+  type: apiKey
+  in: header
+  parameter: X-API-KEY
+  direction: inbound
+  description: >-
+    API key issued to a specific client. This can only be used to access data within the client
+    scope. "API Keys are tied to individual clients and cannot be used outside their provided
+    scope."
+  example_shape: uuid v4
+  applies_to:
+  - shift_create_api_v1
+  - shift_update_api_v1
+  - shift_delete_api_v1
+  - timecard_create_api_v1
+  - update_timecard_api_v1
+  - check_in_out_api_v1
+  sources:
+  - openapi/intelycare-external-scheduling-openapi.yml
+- name: HMACSignature
+  type: apiKey
+  in: header
+  parameter: X-Signature-IC
+  direction: outbound
+  actual_mechanism: HMAC-SHA256 hex digest of the body payload, computed with the webhook secret
+  description: >-
+    The hash signature of the payload. IntelyCare webhooks use a HMAC hex digest (SHA256) to
+    compute the signature of the body payload with the webhook secret. Verify in constant time
+    before processing a webhook; it is the only authentication on the callback.
+  applies_to:
+  - shift_accept_webhook_v1
+  - shift_release_webhook_v1
+  sources:
+  - openapi/intelycare-external-scheduling-openapi.yml
+companion_headers:
+- name: X-CLIENT-ID
+  required: true
+  description: >-
+    IntelyCare's unique identifier of the client. Required on all six REST operations alongside
+    X-API-KEY. It is declared as a required parameter on every operation but is NOT declared as a
+    securityScheme, so a spec-driven client generator will not treat it as a credential.
+  applies_to:
+  - shift_create_api_v1
+  - shift_update_api_v1
+  - shift_delete_api_v1
+  - timecard_create_api_v1
+  - update_timecard_api_v1
+  - check_in_out_api_v1
+key_management:
+  self_serve: false
+  rotation_policy: not published
+  provisioning: Keys are issued per client by IntelyCare; contact apisupport@intelycare.com
+  scopes: none — the key is scoped to a client, not to permissions
+  expiry: not published
+failure_mode:
+  status: 401
+  body: {message: Unauthorized}
+  header: WWW_Authenticate
+  header_note: >-
+    Declared with an underscore in the published spec; the RFC 9110 header is WWW-Authenticate.
+gaps:
+- No OAuth 2.0 or OpenID Connect; /.well-known/openid-configuration and
+  /.well-known/oauth-authorization-server return 404 (www) / 403 (api host).
+- No scope or permission model — a key is all-or-nothing inside its client scope.
+- X-CLIENT-ID is a required credential-adjacent header but is not modelled as a securityScheme.
+- No documented key rotation, expiry, or revocation process.

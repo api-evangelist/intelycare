@@ -1,0 +1,106 @@
+generated: '2026-08-01'
+method: searched
+source: https://apidocs.intelycare.com/
+derived_from: openapi/intelycare-external-scheduling-openapi.yml
+api: IntelyCare External Scheduling API v1
+
+authentication:
+  style: api-key-header
+  header: X-API-KEY
+  companion_header: X-CLIENT-ID
+  companion_description: IntelyCare's unique identifier of the client, required on every call.
+  scoping: >-
+    "API Keys are tied to individual clients and cannot be used outside their provided scope."
+    A key can only access data inside its own client scope.
+  oauth: false
+  bearer: false
+  see: authentication/intelycare-authentication.yml
+
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    IntelyCare publishes NO idempotency-key contract — there is no Idempotency-Key header or
+    parameter in the OpenAPI and the docs do not document replay semantics. The client-supplied
+    externalShiftId is a natural key on shift and timecard requests, so a repeated create with the
+    same externalShiftId is likely to be rejected or reconciled server-side, but that behaviour is
+    NOT documented as an idempotency guarantee and must not be relied on. No `Idempotency` pointer
+    is wired in apis.yml for this provider.
+
+pagination:
+  supported: false
+  note: >-
+    The API exposes no list/collection operations — all six operations act on a single object.
+    Docs state explicitly: "Bulk operations are not supported. You can work with only one object
+    per request." There is therefore no pagination surface.
+
+filtering_and_expansion:
+  field_expansion: false
+  sparse_fieldsets: false
+  metadata: false
+
+request_tracing:
+  correlation_header: IC-CorrelationID
+  direction: response
+  description: >-
+    "Unique uuid that can be used for debugging purposes." Returned on 400 and 422 error
+    responses (declared as components.schemas.IC-CorrelationID and attached via responses.headers).
+  present_on_success: false
+  note: The spec only attaches IC-CorrelationID to error responses, not to 200 responses.
+
+versioning:
+  scheme: uri-path
+  current: v1
+  path_segment: /external-scheduling/v1/
+  operation_id_suffix: _api_v1
+  note: >-
+    Version is carried in the server base path (/external-scheduling/v1/), not in a header or
+    media type. Operation ids also carry a _v1 / _webhook_v1 suffix.
+  see: lifecycle/intelycare-lifecycle.yml
+
+error_envelope:
+  format: custom-json
+  rfc9457: false
+  content_type: application/json
+  shape:
+    message: Human-readable error string (the only documented field)
+  example: {message: "Invalid input- Shift end time must be later than the shift start time."}
+  headers:
+  - IC-CorrelationID
+  - WWW_Authenticate  # spelled with an underscore in the spec on the 401 response
+  statuses: [400, 401, 422]
+  see: errors/intelycare-problem-types.yml
+
+rate_limiting:
+  documented: false
+  headers: []
+  note: No rate limits, quotas or throttling headers are documented in the OpenAPI or the docs.
+
+data_formats:
+  media_type: application/json
+  encoding: JSON-encoded requests and responses
+  timestamps:
+    format: ISO 8601
+    modes:
+    - {mode: utc, form: '2024-01-24T05:04:34Z', note: trailing Z means UTC}
+    - mode: facility-local
+      form: '2024-01-24T05:04:34'
+      note: >-
+        omitting the trailing Z means local time, resolved against the facility's configured
+        timezone in the IntelyCare system
+    override_field: timezone
+    override_note: A shift may also carry an explicit `timezone` field (e.g. "ET").
+  bulk: false
+
+events:
+  style: webhooks
+  signature_header: X-Signature-IC
+  signature_algorithm: HMAC-SHA256 hex digest of the body payload, computed with the webhook secret
+  events: [ShiftAccept, ShiftRelease]
+  see: asyncapi/intelycare-shift-events-asyncapi.yml
+
+environments:
+  see: sandbox/intelycare-sandbox.yml
+
+support:
+  email: apisupport@intelycare.com

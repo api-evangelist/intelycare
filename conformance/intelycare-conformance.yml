@@ -1,0 +1,83 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/intelycare-external-scheduling-openapi.yml
+docs: https://apidocs.intelycare.com/
+note: >-
+  Derived from the published OpenAPI plus a search of the IntelyCare developer and corporate
+  surface. No published certification/attestation program (SOC 2, ISO 27001, HIPAA BAA posture,
+  HITRUST) was found on any IntelyCare host, so NO `Compliance` or `TrustCenter` pointer is
+  wired in apis.yml. IntelyCare publishes HIPAA *training* material for facility staff, which is
+  workforce education — not a compliance attestation about the API platform.
+
+standards:
+- id: openapi-3.0
+  conforms: true
+  evidence: openapi/intelycare-external-scheduling-openapi.yml declares openapi 3.0.0 with 6 operations
+- id: rest-json
+  conforms: true
+  evidence: All requests and responses are application/json over HTTP with standard status codes
+- id: iso-8601
+  conforms: true
+  evidence: >-
+    All timestamps (shiftStartTime, shiftEndTime, checkIn, checkOut, clockTime, statusTimestamp)
+    are specified as ISO 8601, UTC with trailing Z or facility-local without
+- id: rfc9457-problem-details
+  conforms: false
+  evidence: 'Errors use a custom {"message": "..."} envelope, not application/problem+json'
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 securityScheme in the OpenAPI; auth is a scoped X-API-KEY header
+- id: oidc
+  conforms: false
+  evidence: No openIdConnect securityScheme; /.well-known/openid-configuration returns 404
+- id: hmac-webhook-signing
+  conforms: true
+  evidence: >-
+    Webhooks carry X-Signature-IC, an HMAC hex digest (SHA256) of the body payload computed with
+    the webhook secret (declared on both x-webhooks entries)
+- id: rfc8594-sunset
+  conforms: false
+  evidence: No Sunset or Deprecation header support documented
+- id: rfc9116-security-txt
+  conforms: false
+  evidence: /.well-known/security.txt returns 404 on every IntelyCare host
+- id: asyncapi
+  conforms: false
+  evidence: >-
+    An event surface exists (2 HMAC-signed webhooks declared as OpenAPI x-webhooks) but IntelyCare
+    publishes no AsyncAPI document; asyncapi/ in this repo is derived from those x-webhooks
+- id: fhir-r4
+  conforms: false
+  evidence: >-
+    Healthcare workforce scheduling, not clinical data. No FHIR resource shapes; no
+    Practitioner/PractitionerRole/Schedule/Slot/Appointment resources are used
+- id: hl7-v2
+  conforms: false
+  evidence: No HL7 v2 messaging surface
+- id: scim
+  conforms: false
+  evidence: No /Users or /Groups SCIM 2.0 paths; healthcare professionals are not provisioned via SCIM
+- id: json-schema
+  conforms: partial
+  evidence: >-
+    Request/response bodies are typed inline with JSON Schema, but only 2 reusable
+    components.schemas exist (TimecardAttribute, IC-CorrelationID) — response bodies are
+    example-only with no schema at all
+- id: idempotency
+  conforms: false
+  evidence: No Idempotency-Key header or documented replay contract
+- id: pagination
+  conforms: false
+  evidence: No collection/list operations; bulk operations explicitly unsupported
+
+certifications:
+  published: []
+  searched:
+  - {host: trust.intelycare.com, result: no-dns}
+  - {host: security.intelycare.com, result: no-dns}
+  - {path: 'https://www.intelycare.com/security/', result: 404}
+  - {path: 'https://www.intelycare.com/responsible-disclosure/', result: 404}
+  note: >-
+    probe-security-programs.py returned vdp=none trust=none for intelycare. As a healthcare
+    workforce employer handling PHI-adjacent data, IntelyCare is very likely operating under
+    HIPAA obligations, but nothing is publicly attested, so nothing is recorded here.

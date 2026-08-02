@@ -1,0 +1,53 @@
+generated: '2026-08-01'
+method: searched
+source: https://apidocs.intelycare.com/
+spec_source: openapi/intelycare-external-scheduling-openapi.yml
+summary: >-
+  IntelyCare publishes a named Sandbox server alongside the production server in the OpenAPI
+  servers[] block. That is the full extent of the published test surface — there is no self-serve
+  sandbox signup, no test/live key prefix convention, no magic test identifiers, no fixture or
+  trigger tooling, and no test clock. API keys are issued per client by IntelyCare, so sandbox
+  access is obtained by contacting apisupport@intelycare.com.
+
+environments:
+- name: production
+  base_url: https://api.intelycare.com/external-scheduling/v1/
+  spec_declaration: '//api.intelycare.com/external-scheduling/v1/'
+  description: Default server
+- name: sandbox
+  base_url: https://api.pre.prod01.platform.intelycare.com/external-scheduling/v1/
+  spec_declaration: '//api.pre.prod01.platform.intelycare.com/external-scheduling/v1/'
+  description: Sandbox server
+  note: >-
+    Declared verbatim in the OpenAPI servers[] as "Sandbox server". The hostname is a
+    pre-production platform environment (pre.prod01).
+
+credentials:
+  self_serve: false
+  key_prefixes: []
+  test_vs_live_separation: >-
+    Separated by HOST, not by key prefix. The same X-API-KEY / X-CLIENT-ID header pair is used
+    against either server; there is no documented sk_test_/sk_live_ style convention.
+  how_to_obtain: >-
+    API keys are issued by IntelyCare and are tied to an individual client — "API Keys are tied
+    to individual clients and cannot be used outside their provided scope." Contact
+    apisupport@intelycare.com to be provisioned.
+  example_key_shape: uuid v4 (docs illustrate d1015a83-9f5f-4a4d-b5fd-4e756ed1d282)
+  warning: >-
+    The uuid above is the documentation's own illustrative value, not a working credential.
+
+magic_test_values: []
+test_clock: false
+fixtures_or_triggers: false
+
+webhook_testing:
+  documented: false
+  note: >-
+    ShiftAccept and ShiftRelease webhooks are signed with an HMAC-SHA256 hex digest in the
+    X-Signature-IC header, computed over the body payload with the webhook secret. No replay
+    tool, CLI forwarder or manual event trigger is published for testing them.
+
+gaps:
+- No public/self-serve sandbox signup — every environment requires a provisioned client key.
+- No documented seed data, test facility, or test healthcare-professional identifiers.
+- No documented way to simulate a shift being accepted or released to exercise the webhooks.

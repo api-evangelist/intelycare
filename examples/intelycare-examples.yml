@@ -1,0 +1,163 @@
+generated: '2026-08-01'
+method: derived
+source: openapi/intelycare-external-scheduling-openapi.yml
+docs: https://apidocs.intelycare.com/
+note: >-
+  Every example below is IntelyCare's own, carried verbatim from the request/response `example`
+  blocks in the published OpenAPI and from the x-webhooks payload examples. Nothing is invented.
+  IntelyCare declares an example for every request body, every 200 response and every documented
+  error on all six operations plus both webhooks — example coverage is the strongest part of
+  this spec.
+
+coverage:
+  operations: 6
+  operations_with_request_example: 6
+  operations_with_success_example: 6
+  operations_with_error_example: 3
+  webhooks_with_example: 2
+
+examples:
+- operation: shift_create_api_v1
+  http: POST /api/shifts
+  request:
+    externalShiftId: '2546810'
+    shiftStartTime: '2024-01-16T23:00:00'
+    shiftEndTime: '2024-01-17T07:00:00'
+    shiftUnit: 1st Floor
+    healthcareProfessionalType: LPN
+    shiftSource: qwerty
+    shiftBoostPercentage: 10
+    timezone: ET
+  response_200:
+    data:
+      clientId: 1234
+      internalShiftId: 10174202
+      externalShiftId: '2546810'
+      shiftStartTime: '2024-01-16T23:00:00'
+      shiftEndTime: '2024-01-17T07:00:00'
+      shiftDate: '2024-01-16'
+      shiftUnit: 1st Floor
+      healthcareProfessionalType: LPN
+      shiftSource: qwerty
+      shiftBoostPercentage: 10
+      timezone: ET
+  response_400:
+    message: Invalid input- Shift end time must be later than the shift start time.
+  response_422:
+    message: Invalid input- shiftEndTime must be a date in the present or in the future.
+
+- operation: shift_update_api_v1
+  http: PUT /api/shifts/{shiftId}
+  path_example: {shiftId: '10174202'}
+  request:
+    shiftStartTime: '2024-01-16T23:00:00'
+    shiftEndTime: '2024-01-17T07:00:00'
+    shiftUnit: 1st Floor
+    healthcareProfessionalType: LPN
+    shiftSource: qwerty
+    shiftBoostPercentage: 10
+    timezone: ET
+
+- operation: shift_delete_api_v1
+  http: DELETE /api/shifts/{shiftId}
+  path_example: {shiftId: '10174202'}
+
+- operation: timecard_create_api_v1
+  http: POST /api/timecards
+  request:
+    externalShiftId: '2546810'
+    checkIn: '2024-01-17T07:00:00'
+    checkOut: '2024-01-17T15:00:00'
+    breakDuration: 30
+  response_200:
+    clientId: 1234
+    externalShiftId: '2546810'
+    checkIn: '2024-01-17T07:00:00'
+    checkOut: '2024-01-17T15:00:00'
+    breakDuration: 30
+    errors: null
+    createdAt: '2024-01-17T15:01:00'
+
+- operation: update_timecard_api_v1
+  http: PUT /api/timecards
+  request:
+    externalShiftId: '2546810'
+    checkIn: '2024-01-17T07:00:00'
+    checkOut: '2024-01-17T15:00:00'
+    breakDuration: 30
+
+- operation: check_in_out_api_v1
+  http: POST /api/clockinout/{platform_type}
+  path_example: {platform_type: intelycare}
+  request:
+    nurseId: '67798'
+    clockTime: '2024-02-23T07:34:00.000Z'
+    shiftId: '98847575'
+    facilityId: '77666555'
+    event: CLOCK_IN
+  response_200:
+    nurseId: '67798'
+    clockTime: '2024-02-23T07:34:00.000Z'
+    shiftId: '98847575'
+    facilityId: '77666555'
+    event: CLOCK_IN
+    additionalProperties:
+      CLOCK_IN:
+        shiftId: 98847575
+        message: Thanks for Checking in.
+        providerId: 67798
+        discipline: null
+        dateCreated: '2024-02-23T07:34:00.000Z'
+        clientId: 77666555
+        checkIn: null
+        checkOut: null
+        isSuccess: null
+      CLOCK_OUT:
+        shiftId: 98847575
+        message: Thanks for Checking out.
+        providerId: 67798
+        discipline: null
+        dateCreated: '2024-02-23T07:34:00.000Z'
+        clientId: 1077
+        checkIn: '2024-02-23T07:34:00.000Z'
+        checkOut: null
+        isSuccess: null
+
+webhook_examples:
+- event: ShiftAccept
+  operationId: shift_accept_webhook_v1
+  headers:
+    X-Signature-IC: a0b1c1d2e3f5a8b13c21d34e55f89a144b233c377d610e987f1597a2584b4181
+  payload:
+    clientId: 1234
+    externalShiftId: '2546810'
+    shiftStatus: Accepted
+    healthcareProfessional:
+      id: '456789'
+      externalId: '111124'
+      lastName: Nightengale
+      firstName: Florence
+      healthcareProfessionalType: LPN
+      phoneNumber: (800) 900-1234
+      email: florence.nightengale@gmail.com
+      profilePicture: XfPy2KmGiZTQySSS3OHCWw==
+    statusTimestamp: '2024-01-17T15:01:00'
+
+- event: ShiftRelease
+  operationId: shift_release_webhook_v1
+  headers:
+    X-Signature-IC: a0b1c1d2e3f5a8b13c21d34e55f89a144b233c377d610e987f1597a2584b4181
+  payload:
+    clientId: 1234
+    externalShiftId: '2546810'
+    shiftStatus: Released
+    statusTimestamp: '2024-01-17T15:01:00'
+
+caveats:
+- >-
+  The x-codeSamples attached to shift create and update are placeholder cURL snippets pointing
+  at 'https://data.apiexample.com/api/example/batch_query/json' with an octet-stream content
+  type. They are copied boilerplate and do NOT call IntelyCare — they are excluded here.
+- >-
+  All identifier values in the examples are sent as JSON strings even where the schema declares
+  integer.
