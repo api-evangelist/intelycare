@@ -1,0 +1,1671 @@
+{
+  "item": [
+    {
+      "id": "c7f5ca89-6a4e-4107-b4b3-9424295bb7f1",
+      "name": "Shift",
+      "description": {
+        "content": "Integrate with the IntelyCare platform to create shift requests effortlessly. Our API allows you to programmatically submit and manage shift requests, providing you with the flexibility to adapt to your workforce scheduling needs.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "261c7935-dad7-4868-a1cb-330ff3081c8e",
+          "name": "Create",
+          "request": {
+            "name": "Create",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "shifts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                "key": "X-API-KEY",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Intelycare's Unique identifier of the client.",
+                "key": "X-CLIENT-ID",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"externalShiftId\": \"<string>\",\n  \"shiftStartTime\": \"<string>\",\n  \"shiftEndTime\": \"<string>\",\n  \"shiftUnit\": \"<string>\",\n  \"healthcareProfessionalType\": \"<string>\",\n  \"shiftSource\": \"<string>\",\n  \"timezone\": \"<string>\",\n  \"shiftBoostPercentage\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "c75f0a25-229f-453d-98c1-e223464d9157",
+              "name": "200 OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "shifts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a839f5f"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"externalShiftId\": \"2546810\",\n  \"shiftStartTime\": \"2024-01-16T23:00:00\",\n  \"shiftEndTime\": \"2024-01-17T07:00:00\",\n  \"shiftUnit\": \"1st Floor\",\n  \"healthcareProfessionalType\": \"LPN\",\n  \"shiftSource\": \"qwerty\",\n  \"shiftBoostPercentage\": 10,\n  \"timezone\": \"ET\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"clientId\": 1234,\n    \"internalShiftId\": 10174202,\n    \"externalShiftId\": \"2546810\",\n    \"shiftStartTime\": \"2024-01-16T23:00:00\",\n    \"shiftEndTime\": \"2024-01-17T07:00:00\",\n    \"shiftDate\": \"2024-01-16\",\n    \"shiftUnit\": \"1st Floor\",\n    \"healthcareProfessionalType\": \"LPN\",\n    \"shiftSource\": \"qwerty\",\n    \"shiftBoostPercentage\": 10,\n    \"timezone\": \"ET\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e9560c84-cc3d-4d41-946f-871fb6776e73",
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "shifts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a839f5f"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"externalShiftId\": \"2546810\",\n  \"shiftStartTime\": \"2024-01-16T23:00:00\",\n  \"shiftEndTime\": \"2024-01-17T07:00:00\",\n  \"shiftUnit\": \"1st Floor\",\n  \"healthcareProfessionalType\": \"LPN\",\n  \"shiftSource\": \"qwerty\",\n  \"shiftBoostPercentage\": 10,\n  \"timezone\": \"ET\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Unique uuid that can be used for debugging purposes",
+                  "key": "IC-CorrelationID",
+                  "value": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid input- Shift end time must be later than the shift start time.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "476d93d4-da97-4fd1-9995-1079c035199d",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "shifts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a839f5f"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"externalShiftId\": \"2546810\",\n  \"shiftStartTime\": \"2024-01-16T23:00:00\",\n  \"shiftEndTime\": \"2024-01-17T07:00:00\",\n  \"shiftUnit\": \"1st Floor\",\n  \"healthcareProfessionalType\": \"LPN\",\n  \"shiftSource\": \"qwerty\",\n  \"shiftBoostPercentage\": 10,\n  \"timezone\": \"ET\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "WWW_Authenticate",
+                  "value": "string",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9649aef9-5e97-4ed5-8a94-9ee7b9fde2ae",
+              "name": "422 Unprocessable Entity",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "shifts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a839f5f"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"externalShiftId\": \"2546810\",\n  \"shiftStartTime\": \"2024-01-16T23:00:00\",\n  \"shiftEndTime\": \"2024-01-17T07:00:00\",\n  \"shiftUnit\": \"1st Floor\",\n  \"healthcareProfessionalType\": \"LPN\",\n  \"shiftSource\": \"qwerty\",\n  \"shiftBoostPercentage\": 10,\n  \"timezone\": \"ET\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unprocessable Entity (WebDAV) (RFC 4918)",
+              "code": 422,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Unique uuid that can be used for debugging purposes",
+                  "key": "IC-CorrelationID",
+                  "value": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Invalid input- shiftEndTime must be a date in the present or in the future.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f79fdcd1-b587-4bad-b219-e7c12fa680ea",
+          "name": "Update",
+          "request": {
+            "name": "Update",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "shifts",
+                ":shiftId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "shiftId",
+                  "description": "(Required) Intelycare's Unique identifier of the shift."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                "key": "X-API-KEY",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Intelycare's Unique identifier of the client.",
+                "key": "X-CLIENT-ID",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"shiftStartTime\": \"<string>\",\n  \"shiftEndTime\": \"<string>\",\n  \"shiftUnit\": \"<string>\",\n  \"healthcareProfessionalType\": \"<string>\",\n  \"shiftSource\": \"<string>\",\n  \"shiftBoostPercentage\": 0,\n  \"timezone\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3479cd8c-bedf-4cea-ac81-41ec6f5739ea",
+              "name": "200 OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "shifts",
+                    ":shiftId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "shiftId",
+                      "description": "(Required) Intelycare's Unique identifier of the shift."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shiftStartTime\": \"2024-01-16T23:00:00\",\n  \"shiftEndTime\": \"2024-01-17T07:00:00\",\n  \"shiftUnit\": \"1st Floor\",\n  \"healthcareProfessionalType\": \"LPN\",\n  \"shiftSource\": \"qwerty\",\n  \"shiftBoostPercentage\": 10,\n  \"timezone\": \"ET\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"clientId\": 1234,\n    \"internalShiftId\": 10174202,\n    \"externalShiftId\": \"2546810\",\n    \"shiftStartTime\": \"2024-01-16T23:00:00\",\n    \"shiftEndTime\": \"2024-01-17T07:00:00\",\n    \"shiftDate\": \"2024-01-16\",\n    \"shiftUnit\": \"1st Floor\",\n    \"healthcareProfessionalType\": \"LPN\",\n    \"shiftSource\": \"qwerty\",\n    \"shiftBoostPercentage\": 10,\n    \"timezone\": \"ET\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "258ea3e6-73fc-47bc-803c-ff4adc18ee88",
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "shifts",
+                    ":shiftId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "shiftId",
+                      "description": "(Required) Intelycare's Unique identifier of the shift."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shiftStartTime\": \"2024-01-16T23:00:00\",\n  \"shiftEndTime\": \"2024-01-17T07:00:00\",\n  \"shiftUnit\": \"1st Floor\",\n  \"healthcareProfessionalType\": \"LPN\",\n  \"shiftSource\": \"qwerty\",\n  \"shiftBoostPercentage\": 10,\n  \"timezone\": \"ET\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Unique uuid that can be used for debugging purposes",
+                  "key": "IC-CorrelationID",
+                  "value": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Shift ID is not valid!\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e1809cdb-1d5f-499f-85e1-b1c4f484f3a8",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "shifts",
+                    ":shiftId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "shiftId",
+                      "description": "(Required) Intelycare's Unique identifier of the shift."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"shiftStartTime\": \"2024-01-16T23:00:00\",\n  \"shiftEndTime\": \"2024-01-17T07:00:00\",\n  \"shiftUnit\": \"1st Floor\",\n  \"healthcareProfessionalType\": \"LPN\",\n  \"shiftSource\": \"qwerty\",\n  \"shiftBoostPercentage\": 10,\n  \"timezone\": \"ET\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "WWW_Authenticate",
+                  "value": "string",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "136d8b46-0555-4ac9-ae1e-56a7275a8f4f",
+          "name": "Delete",
+          "request": {
+            "name": "Delete",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "shifts",
+                ":shiftId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "shiftId",
+                  "description": "(Required) Intelycare's Unique identifier of the shift."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                "key": "X-API-KEY",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Intelycare's Unique identifier of the client.",
+                "key": "X-CLIENT-ID",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "DELETE",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "cf6f65d7-c5f7-46fa-9fee-405585d0b53b",
+              "name": "200 OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "shifts",
+                    ":shiftId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "shiftId",
+                      "description": "(Required) Intelycare's Unique identifier of the shift."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"internalShiftId\": 10174202,\n    \"shiftDate\": \"2024-01-16\",\n    \"removed\": 1\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3a9f662b-c7df-4c55-8357-39302ad84660",
+              "name": "400 Bad Request",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "shifts",
+                    ":shiftId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "shiftId",
+                      "description": "(Required) Intelycare's Unique identifier of the shift."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Unique uuid that can be used for debugging purposes",
+                  "key": "IC-CorrelationID",
+                  "value": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Shift ID is not valid!\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "115391d1-fe4e-4e97-8062-c9ed9b8e9d55",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "shifts",
+                    ":shiftId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "shiftId",
+                      "description": "(Required) Intelycare's Unique identifier of the shift."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "DELETE",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "WWW_Authenticate",
+                  "value": "string",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "8d3e592c-103c-4e40-888a-81f32594610c",
+      "name": "Timecard",
+      "description": {
+        "content": "Simplify billing reconciliation by exchanging timecard information seamlessly. Our API supports the exchange of accurate timekeeping data, ensuring a smooth and efficient process for both you and the IntelyCare platform.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "a00624c7-0e56-448f-af90-688540e083bc",
+          "name": "Create",
+          "request": {
+            "name": "Create",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "timecards"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                "key": "X-API-KEY",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Intelycare's Unique identifier of the client.",
+                "key": "X-CLIENT-ID",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"externalShiftId\": \"<string>\",\n  \"checkIn\": \"<string>\",\n  \"checkOut\": \"<string>\",\n  \"breakDuration\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "99e5d62f-2b60-47b4-8c5c-51612ef923d1",
+              "name": "200 OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "timecards"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"externalShiftId\": \"2546810\",\n  \"checkIn\": \"2024-01-17T07:00:00\",\n  \"checkOut\": \"2024-01-17T15:00:00\",\n  \"breakDuration\": 30\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"clientId\": 1234,\n  \"externalShiftId\": \"2546810\",\n  \"checkIn\": \"2024-01-17T07:00:00\",\n  \"checkOut\": \"2024-01-17T15:00:00\",\n  \"breakDuration\": 30,\n  \"errors\": null,\n  \"createdAt\": \"2024-01-17T15:01:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ab7e4fb-7602-4679-858e-3d376660c1a5",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "timecards"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"externalShiftId\": \"2546810\",\n  \"checkIn\": \"2024-01-17T07:00:00\",\n  \"checkOut\": \"2024-01-17T15:00:00\",\n  \"breakDuration\": 30\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "WWW_Authenticate",
+                  "value": "string",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "409be19d-49de-4ffb-830a-ef33279fc5a9",
+          "name": "Update",
+          "request": {
+            "name": "Update",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "timecards"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                "key": "X-API-KEY",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Intelycare's Unique identifier of the client.",
+                "key": "X-CLIENT-ID",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"externalShiftId\": \"<integer>\",\n  \"checkIn\": \"<string>\",\n  \"checkOut\": \"<string>\",\n  \"breakDuration\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "73e787f3-de3f-4445-8d88-3554e0be2bdb",
+              "name": "200 OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "timecards"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"externalShiftId\": \"2546810\",\n  \"checkIn\": \"2024-01-17T07:00:00\",\n  \"checkOut\": \"2024-01-17T15:00:00\",\n  \"breakDuration\": 30\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"clientId\": 1234,\n  \"externalShiftId\": \"2546810\",\n  \"checkIn\": \"2024-01-17T07:00:00\",\n  \"checkOut\": \"2024-01-17T15:00:00\",\n  \"breakDuration\": 30,\n  \"errors\": null,\n  \"updatedAt\": \"2024-01-17T15:01:00\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8d3b2791-3009-4954-ad23-6d06972a2283",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "timecards"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"externalShiftId\": \"2546810\",\n  \"checkIn\": \"2024-01-17T07:00:00\",\n  \"checkOut\": \"2024-01-17T15:00:00\",\n  \"breakDuration\": 30\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "WWW_Authenticate",
+                  "value": "string",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    },
+    {
+      "id": "e94d8ec9-f99c-43b3-b4dc-459deabaac53",
+      "name": "Webhook Events",
+      "description": {
+        "content": "Real-time updates on the status of submitted shifts. The API response includes valuable information about the assigned IntelyPro, giving you insights into the workforce handling each shift.",
+        "type": "text/plain"
+      },
+      "item": [],
+      "event": []
+    },
+    {
+      "id": "7255f2c9-57da-44f0-ac21-664ba1e92454",
+      "name": "Check In / Check Out",
+      "description": {
+        "content": "Easily manage check-in and check-out events for shifts. Our API allows you to programmatically submit and manage check-in and check-out events, providing you with the flexibility to adapt to your workforce scheduling needs.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "896fb5b0-7356-481c-8b37-fce08518fe04",
+          "name": "Check-in / Check-out",
+          "request": {
+            "name": "Check-in / Check-out",
+            "description": {},
+            "url": {
+              "path": [
+                "api",
+                "clockinout",
+                ":platform_type"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "platform_type",
+                  "description": "(Required) Intelycare's Unique identifier of the platform using this API."
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                "key": "X-API-KEY",
+                "value": "<string>"
+              },
+              {
+                "disabled": false,
+                "description": "(Required) Intelycare's Unique identifier of the client.",
+                "key": "X-CLIENT-ID",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-API-KEY"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nurseId\": \"<integer>\",\n  \"clockTime\": \"<string>\",\n  \"shiftId\": \"<integer>\",\n  \"facilityId\": \"<integer>\",\n  \"event\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "df3d894e-02d6-49fe-a09d-4a8fc3beed49",
+              "name": "200 OK",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "clockinout",
+                    ":platform_type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "platform_type",
+                      "description": "(Required) Intelycare's Unique identifier of the platform using this API."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nurseId\": \"67798\",\n  \"clockTime\": \"2024-02-23T07:34:00.000Z\",\n  \"shiftId\": \"98847575\",\n  \"facilityId\": \"77666555\",\n  \"event\": \"CLOCK_IN\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"nurseId\": \"67798\",\n  \"clockTime\": \"2024-02-23T07:34:00.000Z\",\n  \"shiftId\": \"98847575\",\n  \"facilityId\": \"77666555\",\n  \"event\": \"CLOCK_IN\",\n  \"additionalProperties\": {\n    \"CLOCK_IN\": {\n      \"shiftId\": 98847575,\n      \"message\": \"Thanks for Checking in.\",\n      \"providerId\": 67798,\n      \"discipline\": null,\n      \"dateCreated\": \"2024-02-23T07:34:00.000Z\",\n      \"clientId\": 77666555,\n      \"checkIn\": null,\n      \"checkOut\": null,\n      \"isSuccess\": null\n    },\n    \"CLOCK_OUT\": {\n      \"shiftId\": 98847575,\n      \"message\": \"Thanks for Checking out.\",\n      \"providerId\": 67798,\n      \"discipline\": null,\n      \"dateCreated\": \"2024-02-23T07:34:00.000Z\",\n      \"clientId\": 1077,\n      \"checkIn\": \"2024-02-23T07:34:00.000Z\",\n      \"checkOut\": null,\n      \"isSuccess\": null\n    }\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "08dd6383-a123-4661-981c-f1f42f8b5164",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "api",
+                    "clockinout",
+                    ":platform_type"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "platform_type",
+                      "description": "(Required) Intelycare's Unique identifier of the platform using this API."
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-API-KEY",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) API key issued to a specific client. This can only be used to access data within the client scope.",
+                    "key": "X-API-KEY",
+                    "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) Intelycare's Unique identifier of the client.",
+                    "key": "X-CLIENT-ID",
+                    "value": "1234"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"nurseId\": \"67798\",\n  \"clockTime\": \"2024-02-23T07:34:00.000Z\",\n  \"shiftId\": \"98847575\",\n  \"facilityId\": \"77666555\",\n  \"event\": \"CLOCK_IN\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "disabled": false,
+                  "key": "WWW_Authenticate",
+                  "value": "string",
+                  "description": ""
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Unauthorized\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "//api.intelycare.com/external-scheduling/v1/",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "X-API-KEY"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "be00b4e6-4035-4143-a2ca-efb06bdbae66",
+    "name": "IntelyCare API Documentation",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "# Introduction\nWelcome to the IntelyCare API documentation, your gateway to seamless integration with the IntelyCare Staffing platform. Our REST API empowers clients to efficiently create shift requests, enabling a streamlined process for managing workforce scheduling. By leveraging this API, you can enhance your systems with real-time information about shift status, including when a shift has been filled and details about the assigned IntelyPro.\n\n# Overview\n\nThe IntelyCare API facilitates communication between your application and the IntelyCare platform, enabling a seamless exchange of data. This documentation serves as a comprehensive guide to help you integrate your systems with our powerful RESTful API. All requests and responses are JSON-encoded, and use standard HTTP response codes and authentication schemes. Bulk operations are not supported. You can work with only one object per request.\n\nTo get started with the IntelyCare API, refer to the detailed documentation below. We provide comprehensive information on authentication, endpoints, request and response formats, and error handling.\n\n# Authentication\n\nIntelyCare offers the following authentication schemes:\n\n| Type                      | Usage       | Description                                                    | Example                                                                   |\n| ------------------------- | ----------- | -------------------------------------------------------------- | ------------------------------------------------------------------------- |\n| apiKey                    | REST APIs   | Required as `X-API-KEY` header for all RESTful calls           | `d1015a83-9f5f-4a4d-b5fd-4e756ed1d282`                                    |\n| HMAC Signature (SHA256)   | Webhooks    | Provided as `X-Signature-IC` header on all webhooks            | `bcc151a55acf3d93c097e768f2b96f82d91b56d6fe2a102818b70f0fdfd0ccd1`        |\n\n> :memo: **Note:** API Keys are tied to individual clients and cannot be used outside their provided scope\n\n# Support and Assistance\n\nIf you have any questions, encounter issues, or require assistance during the integration process, our dedicated support team is here to help. Reach out to apisupport@intelycare.com for prompt and reliable assistance.\n\nThank you for choosing IntelyCare. Let's build a more efficient and connected healthcare workforce together!\n\n\nContact Support:\n Name: API Support\n Email: apisupport@intelycare.com",
+      "type": "text/plain"
+    }
+  }
+}

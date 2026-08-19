@@ -2,102 +2,133 @@ generated: '2026-08-01'
 method: derived
 status: candidate
 source: openapi/intelycare-external-scheduling-openapi.yml
-summary: >-
-  NO official hosted or remote Model Context Protocol server was found for IntelyCare. Searched
-  the API documentation (apidocs.intelycare.com), the corporate site, the Intelycare-Data-Science
-  GitHub org, npm (@modelcontextprotocol and free-text "intelycare" — 0 results) and public MCP
-  registries. The tool set below is a CANDIDATE surface DERIVED one-per-operation from the
-  published External Scheduling OpenAPI. It is a proposal, not something IntelyCare publishes —
-  no `MCPServer` pointer is wired in apis.yml, because no server exists.
+summary: NO official hosted or remote Model Context Protocol server was found for IntelyCare. Searched
+  the API documentation (apidocs.intelycare.com), the corporate site, the Intelycare-Data-Science GitHub
+  org, npm (@modelcontextprotocol and free-text "intelycare" — 0 results) and public MCP registries. The
+  tool set below is a CANDIDATE surface DERIVED one-per-operation from the published External Scheduling
+  OpenAPI. It is a proposal, not something IntelyCare publishes — no `MCPServer` pointer is wired in apis.yml,
+  because no server exists.
 searched:
-- {surface: https://apidocs.intelycare.com/, result: no MCP mention}
-- {surface: 'npm registry search "intelycare"', result: 0 packages}
-- {surface: 'https://github.com/orgs/Intelycare-Data-Science/repositories', result: no MCP server}
-- {surface: /.well-known/ probes on all IntelyCare hosts, result: no oauth-protected-resource, no ai-plugin.json}
-
+- surface: https://apidocs.intelycare.com/
+  result: no MCP mention
+- surface: npm registry search "intelycare"
+  result: 0 packages
+- surface: https://github.com/orgs/Intelycare-Data-Science/repositories
+  result: no MCP server
+- surface: /.well-known/ probes on all IntelyCare hosts
+  result: no oauth-protected-resource
+  no ai-plugin.json: null
 server:
   name: intelycare
   published: false
   transport: null
   url: null
-
 auth_model:
-  note: >-
-    Any real MCP server for this API would have to carry two scoped secrets per client — an
-    X-API-KEY and its matching X-CLIENT-ID. The key "cannot be used outside its provided scope",
-    so an MCP server is single-tenant per credential pair.
-  headers: [X-API-KEY, X-CLIENT-ID]
-
+  note: Any real MCP server for this API would have to carry two scoped secrets per client — an X-API-KEY
+    and its matching X-CLIENT-ID. The key "cannot be used outside its provided scope", so an MCP server
+    is single-tenant per credential pair.
+  headers:
+  - X-API-KEY
+  - X-CLIENT-ID
 tools:
 - name: create_shift
-  description: >-
-    Create a shift request on the IntelyCare Staffing platform for a facility unit, specifying
+  description: Create a shift request on the IntelyCare Staffing platform for a facility unit, specifying
     the window, the required healthcare professional type and an optional pay boost.
   source_operation: openapi/intelycare-external-scheduling-openapi.yml#shift_create_api_v1
   http: POST /api/shifts
   input_from_spec:
-    required: [externalShiftId, shiftStartTime, shiftEndTime, shiftUnit, healthcareProfessionalType, shiftSource]
-    optional: [timezone, shiftBoostPercentage]
+    required:
+    - externalShiftId
+    - shiftStartTime
+    - shiftEndTime
+    - shiftUnit
+    - healthcareProfessionalType
+    - shiftSource
+    optional:
+    - timezone
+    - shiftBoostPercentage
   consequence: write
-
 - name: update_shift
   description: Update an existing shift request by IntelyCare's internal shift id.
   source_operation: openapi/intelycare-external-scheduling-openapi.yml#shift_update_api_v1
   http: PUT /api/shifts/{shiftId}
   input_from_spec:
-    path: [shiftId]
-    required: [shiftStartTime, shiftEndTime, shiftUnit, healthcareProfessionalType, shiftSource]
-    optional: [shiftBoostPercentage, timezone]
+    path:
+    - shiftId
+    required:
+    - shiftStartTime
+    - shiftEndTime
+    - shiftUnit
+    - healthcareProfessionalType
+    - shiftSource
+    optional:
+    - shiftBoostPercentage
+    - timezone
   consequence: write
-
 - name: delete_shift
   description: Cancel/delete a shift request by IntelyCare's internal shift id.
   source_operation: openapi/intelycare-external-scheduling-openapi.yml#shift_delete_api_v1
   http: DELETE /api/shifts/{shiftId}
   input_from_spec:
-    path: [shiftId]
+    path:
+    - shiftId
   consequence: destructive
-  note: >-
-    Deleting a shift withdraws a live staffing request that a nursing professional may already
-    have accepted. A real MCP deployment should gate this behind human confirmation.
-
+  note: Deleting a shift withdraws a live staffing request that a nursing professional may already have
+    accepted. A real MCP deployment should gate this behind human confirmation.
 - name: create_timecard
-  description: >-
-    Submit a timecard for a completed shift (check-in, check-out and break duration) for billing
+  description: Submit a timecard for a completed shift (check-in, check-out and break duration) for billing
     reconciliation.
   source_operation: openapi/intelycare-external-scheduling-openapi.yml#timecard_create_api_v1
   http: POST /api/timecards
   input_from_spec:
-    required: [externalShiftId, checkIn, checkOut, breakDuration]
+    required:
+    - externalShiftId
+    - checkIn
+    - checkOut
+    - breakDuration
   consequence: write
   note: Timecards drive billing — treat as financially consequential.
-
 - name: update_timecard
   description: Correct a previously submitted timecard for a shift.
   source_operation: openapi/intelycare-external-scheduling-openapi.yml#update_timecard_api_v1
   http: PUT /api/timecards
   input_from_spec:
-    required: [externalShiftId, checkIn, checkOut, breakDuration]
+    required:
+    - externalShiftId
+    - checkIn
+    - checkOut
+    - breakDuration
   consequence: write
-
 - name: post_clock_event
-  description: >-
-    Post a CLOCK_IN or CLOCK_OUT punch for a nursing professional on a shift at a facility, from
-    a named platform.
+  description: Post a CLOCK_IN or CLOCK_OUT punch for a nursing professional on a shift at a facility,
+    from a named platform.
   source_operation: openapi/intelycare-external-scheduling-openapi.yml#check_in_out_api_v1
   http: POST /api/clockinout/{platform_type}
   input_from_spec:
-    path: [platform_type]
-    required: [nurseId, clockTime, shiftId, facilityId, event]
-    enums: {event: [CLOCK_IN, CLOCK_OUT]}
+    path:
+    - platform_type
+    required:
+    - nurseId
+    - clockTime
+    - shiftId
+    - facilityId
+    - event
+    enums:
+      event:
+      - CLOCK_IN
+      - CLOCK_OUT
   consequence: write
-
 coverage:
   rest_operations_total: 6
   tools_derived: 6
   read_only_tools: 0
-  note: >-
-    The API is write-only — there is no GET operation anywhere in the spec. An agent can create,
-    change and cancel shifts and timecards but cannot read back the state of a single one. Shift
-    state is only ever learned asynchronously, via the ShiftAccept / ShiftRelease webhooks. That
-    read gap is the single biggest obstacle to a useful agent surface on this API.
+  note: The API is write-only — there is no GET operation anywhere in the spec. An agent can create, change
+    and cancel shifts and timecards but cannot read back the state of a single one. Shift state is only
+    ever learned asynchronously, via the ShiftAccept / ShiftRelease webhooks. That read gap is the single
+    biggest obstacle to a useful agent surface on this API.
+deployment:
+  mode: none
+  verified: derived
+  tools: 6
+  checked: '2026-08-12'
+  source: catalog MCP census

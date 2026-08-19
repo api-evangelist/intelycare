@@ -1,0 +1,248 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "IntelyCare API Documentation",
+    "version": "1.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "X-API-KEY",
+      "value": "{{X-API-KEY}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Shift",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//api.intelycare.com/external-scheduling/v1/api/shifts",
+            "headers": [
+              {
+                "name": "X-API-KEY",
+                "value": "d1015a839f5f"
+              },
+              {
+                "name": "X-CLIENT-ID",
+                "value": "1234"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create"
+        },
+        {
+          "info": {
+            "name": "Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "//api.intelycare.com/external-scheduling/v1/api/shifts/:shiftId",
+            "headers": [
+              {
+                "name": "X-API-KEY",
+                "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+              },
+              {
+                "name": "X-CLIENT-ID",
+                "value": "1234"
+              }
+            ],
+            "params": [
+              {
+                "name": "shiftId",
+                "value": "10174202",
+                "type": "path",
+                "description": "Intelycare's Unique identifier of the shift."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update"
+        },
+        {
+          "info": {
+            "name": "Delete",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "//api.intelycare.com/external-scheduling/v1/api/shifts/:shiftId",
+            "headers": [
+              {
+                "name": "X-API-KEY",
+                "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+              },
+              {
+                "name": "X-CLIENT-ID",
+                "value": "1234"
+              }
+            ],
+            "params": [
+              {
+                "name": "shiftId",
+                "value": "10174202",
+                "type": "path",
+                "description": "Intelycare's Unique identifier of the shift."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Timecard",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//api.intelycare.com/external-scheduling/v1/api/timecards",
+            "headers": [
+              {
+                "name": "X-API-KEY",
+                "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+              },
+              {
+                "name": "X-CLIENT-ID",
+                "value": "1234"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create"
+        },
+        {
+          "info": {
+            "name": "Update",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "//api.intelycare.com/external-scheduling/v1/api/timecards",
+            "headers": [
+              {
+                "name": "X-API-KEY",
+                "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+              },
+              {
+                "name": "X-CLIENT-ID",
+                "value": "1234"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Update"
+        }
+      ]
+    },
+    {
+      "info": {
+        "name": "Check In / Check Out",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Check-in / Check-out",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "//api.intelycare.com/external-scheduling/v1/api/clockinout/:platform_type",
+            "headers": [
+              {
+                "name": "X-API-KEY",
+                "value": "d1015a83-9f5f-4a4d-b5fd-4e756ed1d282"
+              },
+              {
+                "name": "X-CLIENT-ID",
+                "value": "1234"
+              }
+            ],
+            "params": [
+              {
+                "name": "platform_type",
+                "value": "intelycare",
+                "type": "path",
+                "description": "Intelycare's Unique identifier of the platform using this API."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-API-KEY",
+              "value": "{{X-API-KEY}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Check-in / Check-out"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
