@@ -18,6 +18,19 @@ specificationVersion: '0.23'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:
+- Healthcare
+- Healthcare Staffing
+- Nursing
+- Workforce Management
+- Scheduling
+- Shift Management
+- Timekeeping
+- Marketplace
+- Webhook
+- Per Diem
+- Credentialing
+- Post-Acute Care
+tags_raw:
 - healthcare
 - healthcare-staffing
 - nursing
@@ -47,6 +60,15 @@ apis:
   humanURL: https://apidocs.intelycare.com/
   baseURL: https://api.intelycare.com/external-scheduling/v1/
   tags:
+  - Healthcare
+  - Healthcare Staffing
+  - Nursing
+  - Workforce Management
+  - Scheduling
+  - Shift Management
+  - Timekeeping
+  - Webhook
+  tags_raw:
   - healthcare
   - healthcare-staffing
   - nursing
