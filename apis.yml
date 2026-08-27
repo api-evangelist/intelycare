@@ -49,37 +49,19 @@ maintainers:
 - FN: APIs.json
   email: info@apis.io
 apis:
-- name: IntelyCare External Scheduling API
+- aid: intelycare:intelycare-check-in-check-out-api
+  name: IntelyCare Check In / Check Out API
   description: >-
-    REST API for integrating a facility's scheduling, EHR or workforce system with the IntelyCare Staffing
-    platform. Clients create, update and delete shift requests, submit and update timecards for billing
-    reconciliation, and post clock-in/clock-out events. All requests and responses are JSON-encoded;
-    bulk operations are not supported (one object per request). Authentication is an X-API-KEY header
-    scoped to a single client, paired with an X-CLIENT-ID header. Real-time shift status is pushed back
-    via HMAC-SHA256-signed webhooks (Shift Accept, Shift Release).
+    Easily manage check-in and check-out events for shifts. Our API allows you to programmatically submit
+    and manage check-in and check-out events, providing you with the flexibility to adapt to your workforce
+    scheduling needs.
   humanURL: https://apidocs.intelycare.com/
   baseURL: https://api.intelycare.com/external-scheduling/v1/
   tags:
-  - Healthcare
-  - Healthcare Staffing
-  - Nursing
-  - Workforce Management
-  - Scheduling
-  - Shift Management
-  - Timekeeping
-  - Webhook
-  tags_raw:
-  - healthcare
-  - healthcare-staffing
-  - nursing
-  - workforce-management
-  - scheduling
-  - shift-management
-  - timekeeping
-  - webhooks
+  - Check In / Check Out
   properties:
   - type: OpenAPI
-    url: openapi/intelycare-external-scheduling-openapi.yml
+    url: openapi/intelycare-check-in-check-out-api-openapi.yml
   - type: Documentation
     url: https://apidocs.intelycare.com/
   - type: APIReference
@@ -90,13 +72,93 @@ apis:
     url: asyncapi/intelycare-shift-events-asyncapi.yml
   - type: AsyncAPI
     url: asyncapi/intelycare-shift-events-asyncapi.yml
-  - type: Overlay
-    url: overlays/intelycare-external-scheduling-overlay.yaml
+  - type: Examples
+    url: examples/intelycare-examples.yml
+  - type: Sandbox
+    url: sandbox/intelycare-sandbox.yml
+- aid: intelycare:intelycare-shift-api
+  name: IntelyCare Shift API
+  description: >-
+    Integrate with the IntelyCare platform to create shift requests effortlessly. Our API allows you to
+    programmatically submit and manage shift requests, providing you with the flexibility to adapt to
+    your workforce scheduling needs.
+  humanURL: https://apidocs.intelycare.com/
+  baseURL: https://api.intelycare.com/external-scheduling/v1/
+  tags:
+  - Shift
+  properties:
+  - type: OpenAPI
+    url: openapi/intelycare-shift-api-openapi.yml
+  - type: Documentation
+    url: https://apidocs.intelycare.com/
+  - type: APIReference
+    url: https://apidocs.intelycare.com/
+  - type: GettingStarted
+    url: https://apidocs.intelycare.com/
+  - type: Webhooks
+    url: asyncapi/intelycare-shift-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/intelycare-shift-events-asyncapi.yml
+  - type: Examples
+    url: examples/intelycare-examples.yml
+  - type: Sandbox
+    url: sandbox/intelycare-sandbox.yml
+- aid: intelycare:intelycare-timecard-api
+  name: IntelyCare Timecard API
+  description: >-
+    Simplify billing reconciliation by exchanging timecard information seamlessly. Our API supports the
+    exchange of accurate timekeeping data, ensuring a smooth and efficient process for both you and the
+    IntelyCare platform.
+  humanURL: https://apidocs.intelycare.com/
+  baseURL: https://api.intelycare.com/external-scheduling/v1/
+  tags:
+  - Timecard
+  properties:
+  - type: OpenAPI
+    url: openapi/intelycare-timecard-api-openapi.yml
+  - type: Documentation
+    url: https://apidocs.intelycare.com/
+  - type: APIReference
+    url: https://apidocs.intelycare.com/
+  - type: GettingStarted
+    url: https://apidocs.intelycare.com/
+  - type: Webhooks
+    url: asyncapi/intelycare-shift-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/intelycare-shift-events-asyncapi.yml
+  - type: Examples
+    url: examples/intelycare-examples.yml
+  - type: Sandbox
+    url: sandbox/intelycare-sandbox.yml
+- aid: intelycare:intelycare-webhook-events-api
+  name: IntelyCare Webhook Events API
+  description: >-
+    Real-time updates on the status of submitted shifts. The API response includes valuable information
+    about the assigned IntelyPro, giving you insights into the workforce handling each shift.
+  humanURL: https://apidocs.intelycare.com/
+  baseURL: https://api.intelycare.com/external-scheduling/v1/
+  tags:
+  - Webhook Events
+  properties:
+  - type: OpenAPI
+    url: openapi/intelycare-webhook-events-api-openapi.yml
+  - type: Documentation
+    url: https://apidocs.intelycare.com/
+  - type: APIReference
+    url: https://apidocs.intelycare.com/
+  - type: GettingStarted
+    url: https://apidocs.intelycare.com/
+  - type: Webhooks
+    url: asyncapi/intelycare-shift-events-asyncapi.yml
+  - type: AsyncAPI
+    url: asyncapi/intelycare-shift-events-asyncapi.yml
   - type: Examples
     url: examples/intelycare-examples.yml
   - type: Sandbox
     url: sandbox/intelycare-sandbox.yml
 common:
+- type: Overlay
+  url: overlays/intelycare-external-scheduling-overlay.yaml
 - type: MCPServer
   url: mcp/intelycare-mcp.yml
 - type: Website
