@@ -10,6 +10,18 @@ description: >-
   shift requests, exchange timecards for billing reconciliation, and post clock-in/clock-out events,
   with HMAC-signed webhooks pushing shift-accept and shift-release status back in real time. IntelyCare
   acquired CareRev in January 2026 and also operates the Credenza verified-nursing-identity job board.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://www.intelycare.com/wp-content/uploads/2023/08/ic-logo-2-1.svg
 url: https://raw.githubusercontent.com/api-evangelist/intelycare/refs/heads/main/apis.yml
 x-type: company
