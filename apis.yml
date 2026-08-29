@@ -169,6 +169,9 @@ apis:
   - type: Sandbox
     url: sandbox/intelycare-sandbox.yml
 common:
+- type: CapabilityMap
+  url: capabilities/intelycare-capability-edges.yml
+  name: IntelyCare Business Capability Map
 - type: Overlay
   url: overlays/intelycare-external-scheduling-overlay.yaml
 - type: MCPServer

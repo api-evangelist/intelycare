@@ -1,0 +1,25 @@
+slug: intelycare
+provider: IntelyCare
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Healthcare Providers
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 1
+edges:
+- tag: Check In / Check Out
+  spec_file: intelycare-check-in-check-out-api-openapi.yml
+  capability_id: BC-300.70
+  capability_id_l1: BC-300
+  capability_name: HR Operations Management
+  confidence: 0.7
+  evidence: POST /api/clockinout/{platform_type}  check_in_out_api_v1  Check-in / Check-out
+  reason: Clock-in/clock-out for staffed nursing shifts is workforce time capture feeding staffing/payroll
+    operations; maps to HR operations, though shift-marketplace context leaves some ambiguity about the
+    precise sub-capability.
