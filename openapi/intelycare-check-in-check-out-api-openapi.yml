@@ -1,0 +1,200 @@
+openapi: 3.2.0
+info:
+  description: '# Introduction
+
+    Welcome to the IntelyCare API documentation, your gateway to seamless integration with the IntelyCare Staffing platform. Our REST API empowers clients to efficiently create shift requests, enabling a streamlined process for managing workforce scheduling. By leveraging this API, you can enhance your systems with real-time information about shift status, including when a shift has been filled and details about the assigned IntelyPro.
+
+
+    # Overview
+
+
+    The IntelyCare API facilitates communication between your application and the IntelyCare platform, enabling a seamless exchange of data. This documentation serves as a comprehensive guide to help you integrate your systems with our powerful RESTful API. All requests and responses are JSON-encoded, and use standard HTTP response codes and authentication schemes. Bulk operations are not supported. You can work with only one object per request.
+
+
+    To get started with the IntelyCare API, refer to the detailed documentation below. We provide comprehensive information on authentication, endpoints, request and response formats, and error handling.
+
+
+    # Authentication
+
+
+    IntelyCare offers the following authentication schemes:
+
+
+    | Type                      | Usage       | Description                                                    | Example                                                                   |
+
+    | ------------------------- | ----------- | -------------------------------------------------------------- | ------------------------------------------------------------------------- |
+
+    | apiKey                    | REST APIs   | Required as `X-API-KEY` header for all RESTful calls           | `d1015a83-9f5f-4a4d-b5fd-4e756ed1d282`                                    |
+
+    | HMAC Signature (SHA256)   | Webhooks    | Provided as `X-Signature-IC` header on all webhooks            | `bcc151a55acf3d93c097e768f2b96f82d91b56d6fe2a102818b70f0fdfd0ccd1`        |
+
+
+    > :memo: **Note:** API Keys are tied to individual clients and cannot be used outside their provided scope
+
+
+    # Support and Assistance
+
+
+    If you have any questions, encounter issues, or require assistance during the integration process, our dedicated support team is here to help. Reach out to apisupport@intelycare.com for prompt and reliable assistance.
+
+
+    Thank you for choosing IntelyCare. Let''s build a more efficient and connected healthcare workforce together!
+
+    '
+  version: 1.0.0
+  title: IntelyCare API Documentation Check In / Check Out API
+  contact:
+    name: API Support
+    email: apisupport@intelycare.com
+  x-logo:
+    url: https://www.intelycare.com/wp-content/uploads/2023/08/ic-logo-2-1.svg
+    altText: IntelyCare Logo
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+- url: //api.intelycare.com/external-scheduling/v1/
+  description: Default server
+- url: //api.pre.prod01.platform.intelycare.com/external-scheduling/v1/
+  description: Sandbox server
+security:
+- ApiKeyAuth: []
+- HMACSignature: []
+tags:
+- name: Check In / Check Out
+  description: Easily manage check-in and check-out events for shifts. Our API allows you to programmatically submit and manage check-in and check-out events, providing you with the flexibility to adapt to your workforce scheduling needs.
+paths:
+  /api/clockinout/{platform_type}:
+    post:
+      tags:
+      - Check In / Check Out
+      operationId: check_in_out_api_v1
+      summary: Check-in / Check-out
+      security:
+      - ApiKeyAuth: []
+      parameters:
+      - name: X-API-KEY
+        in: header
+        description: API key issued to a specific client. This can only be used to access data within the client scope.
+        example: d1015a83-9f5f-4a4d-b5fd-4e756ed1d282
+        required: true
+        schema:
+          type: string
+      - name: X-CLIENT-ID
+        in: header
+        description: Intelycare's Unique identifier of the client.
+        example: '1234'
+        required: true
+        schema:
+          type: string
+      - name: platform_type
+        in: path
+        description: Intelycare's Unique identifier of the platform using this API.
+        example: intelycare
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - nurseId
+              - clockTime
+              - shiftId
+              - facilityId
+              - event
+              properties:
+                nurseId:
+                  description: Unique identifier for the caregiver
+                  type: integer
+                  example: 67798
+                clockTime:
+                  description: Shift check-in or check-out timestamp in ISO 8601 format and in UTC timezone
+                  type: string
+                  example: '2024-02-23T07:34:00.000Z'
+                shiftId:
+                  description: Unique identifier for the shift
+                  type: integer
+                  example: 98847575
+                facilityId:
+                  description: Unique identifier for the client
+                  type: integer
+                  example: 77666555
+                event:
+                  description: The type of event to be processed
+                  type: string
+                  enum:
+                  - CLOCK_OUT
+                  - CLOCK_IN
+            example:
+              nurseId: '67798'
+              clockTime: '2024-02-23T07:34:00.000Z'
+              shiftId: '98847575'
+              facilityId: '77666555'
+              event: CLOCK_IN
+      responses:
+        '200':
+          description: 200 OK
+          content:
+            application/json:
+              example:
+                nurseId: '67798'
+                clockTime: '2024-02-23T07:34:00.000Z'
+                shiftId: '98847575'
+                facilityId: '77666555'
+                event: CLOCK_IN
+                additionalProperties:
+                  CLOCK_IN:
+                    shiftId: 98847575
+                    message: Thanks for Checking in.
+                    providerId: 67798
+                    discipline: null
+                    dateCreated: '2024-02-23T07:34:00.000Z'
+                    clientId: 77666555
+                    checkIn: null
+                    checkOut: null
+                    isSuccess: null
+                  CLOCK_OUT:
+                    shiftId: 98847575
+                    message: Thanks for Checking out.
+                    providerId: 67798
+                    discipline: null
+                    dateCreated: '2024-02-23T07:34:00.000Z'
+                    clientId: 1077
+                    checkIn: '2024-02-23T07:34:00.000Z'
+                    checkOut: null
+                    isSuccess: null
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+components:
+  responses:
+    UnauthorizedError:
+      description: Unauthorized
+      headers:
+        WWW_Authenticate:
+          schema:
+            type: string
+      content:
+        application/json:
+          examples:
+            foo:
+              value:
+                message: Unauthorized
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-KEY
+    HMACSignature:
+      type: apiKey
+      in: header
+      name: X-Signature-IC
+x-tagGroups:
+- name: APIs
+  tags:
+  - Shift
+  - Timecard
+  - Webhook Events
+  - Check In / Check Out
