@@ -30,18 +30,18 @@ specificationVersion: '0.23'
 created: '2026-08-01'
 modified: '2026-08-01'
 tags:
-- healthcare
-- healthcare-staffing
-- nursing
-- workforce-management
-- scheduling
-- shift-management
-- timekeeping
+- Healthcare
+- Healthcare Staffing
+- Nursing
+- Workforce Management
+- Scheduling
+- Shift Management
+- Timekeeping
 - Marketplace
 - Webhook
-- per-diem
-- credentialing
-- post-acute-care
+- Per Diem
+- Credentialing
+- Post-Acute Care
 tags_raw:
 - healthcare
 - healthcare-staffing
