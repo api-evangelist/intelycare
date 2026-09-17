@@ -129,21 +129,18 @@ apis:
     url: examples/intelycare-examples.yml
   - type: Sandbox
     url: sandbox/intelycare-sandbox.yml
-- aid: intelycare:intelycare-timecard-api
-  name: IntelyCare Timecard API
+- aid: intelycare:intelycare-webhook-events-api
+  name: IntelyCare Webhook Events API
   description: >-
-    Simplify billing reconciliation by exchanging timecard information seamlessly. Our API supports the
-    exchange of accurate timekeeping data, ensuring a smooth and efficient process for both you and the
-    IntelyCare platform.
+    Real-time updates on the status of submitted shifts. The API response includes valuable information
+    about the assigned IntelyPro, giving you insights into the workforce handling each shift.
   humanURL: https://apidocs.intelycare.com/
   baseURL: https://api.intelycare.com/external-scheduling/v1/
   tags:
-  - Time Card
-  tags_raw:
-  - Timecard
+  - Webhook Events
   properties:
   - type: OpenAPI
-    url: openapi/intelycare-timecard-api-openapi.yml
+    url: openapi/intelycare-webhook-events-api-openapi.yml
   - type: Documentation
     url: https://apidocs.intelycare.com/
   - type: APIReference
@@ -158,18 +155,19 @@ apis:
     url: examples/intelycare-examples.yml
   - type: Sandbox
     url: sandbox/intelycare-sandbox.yml
-- aid: intelycare:intelycare-webhook-events-api
-  name: IntelyCare Webhook Events API
+- aid: intelycare:intelycare-time-card-api
+  name: IntelyCare Time Card API
   description: >-
-    Real-time updates on the status of submitted shifts. The API response includes valuable information
-    about the assigned IntelyPro, giving you insights into the workforce handling each shift.
+    Simplify billing reconciliation by exchanging timecard information seamlessly. Our API supports the
+    exchange of accurate timekeeping data, ensuring a smooth and efficient process for both you and the
+    IntelyCare platform.
   humanURL: https://apidocs.intelycare.com/
   baseURL: https://api.intelycare.com/external-scheduling/v1/
   tags:
-  - Webhook Events
+  - Time Card
   properties:
   - type: OpenAPI
-    url: openapi/intelycare-webhook-events-api-openapi.yml
+    url: openapi/intelycare-time-card-api-openapi.yml
   - type: Documentation
     url: https://apidocs.intelycare.com/
   - type: APIReference
