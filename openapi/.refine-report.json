@@ -1,0 +1,34 @@
+{
+  "provider": "intelycare",
+  "sources": [
+    "_original/intelycare-external-scheduling-openapi.yml",
+    "intelycare-webhook-events-api-openapi.yml"
+  ],
+  "outputs": [
+    "intelycare-check-in-check-out-api-openapi.yml",
+    "intelycare-shift-api-openapi.yml",
+    "intelycare-timecard-api-openapi.yml",
+    "intelycare-webhook-events-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [
+    "intelycare-webhook-events-api-openapi.yml: previously refined output kept for 2 operation(s) no archived document covers (e.g. webhook:ShiftAccept post, webhook:ShiftRelease post); its other 0 operation(s) came from the archive and were dropped from it. The archive is incomplete for this provider \u2014 re-harvest to restore _original/ as the full source of truth."
+  ],
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "intelycare-external-scheduling-openapi.yml: upgraded openapi 3.0.0 -> OpenAPI 3.2.0; promoted x-webhooks (2) to the standard `webhooks` key",
+    "tag 'Webhook Events' spans 2 source specs (intelycare-external-scheduling-openapi.yml, intelycare-webhook-events-api-openapi.yml): per-path servers applied",
+    "superseded outputs removed: intelycare-time-card-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 4 total)"
+  ],
+  "skipped": [
+    "_original/intelycare-openapi.json: archived document superseded by a larger archived document",
+    "intelycare-check-in-check-out-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "intelycare-shift-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "intelycare-time-card-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

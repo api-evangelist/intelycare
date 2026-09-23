@@ -1,57 +1,17 @@
 openapi: 3.2.0
 info:
-  description: '# Introduction
-
-    Welcome to the IntelyCare API documentation, your gateway to seamless integration with the IntelyCare Staffing platform. Our REST API empowers clients to efficiently create shift requests, enabling a streamlined process for managing workforce scheduling. By leveraging this API, you can enhance your systems with real-time information about shift status, including when a shift has been filled and details about the assigned IntelyPro.
-
-
-    # Overview
-
-
-    The IntelyCare API facilitates communication between your application and the IntelyCare platform, enabling a seamless exchange of data. This documentation serves as a comprehensive guide to help you integrate your systems with our powerful RESTful API. All requests and responses are JSON-encoded, and use standard HTTP response codes and authentication schemes. Bulk operations are not supported. You can work with only one object per request.
-
-
-    To get started with the IntelyCare API, refer to the detailed documentation below. We provide comprehensive information on authentication, endpoints, request and response formats, and error handling.
-
-
-    # Authentication
-
-
-    IntelyCare offers the following authentication schemes:
-
-
-    | Type                      | Usage       | Description                                                    | Example                                                                   |
-
-    | ------------------------- | ----------- | -------------------------------------------------------------- | ------------------------------------------------------------------------- |
-
-    | apiKey                    | REST APIs   | Required as `X-API-KEY` header for all RESTful calls           | `d1015a83-9f5f-4a4d-b5fd-4e756ed1d282`                                    |
-
-    | HMAC Signature (SHA256)   | Webhooks    | Provided as `X-Signature-IC` header on all webhooks            | `bcc151a55acf3d93c097e768f2b96f82d91b56d6fe2a102818b70f0fdfd0ccd1`        |
-
-
-    > :memo: **Note:** API Keys are tied to individual clients and cannot be used outside their provided scope
-
-
-    # Support and Assistance
-
-
-    If you have any questions, encounter issues, or require assistance during the integration process, our dedicated support team is here to help. Reach out to apisupport@intelycare.com for prompt and reliable assistance.
-
-
-    Thank you for choosing IntelyCare. Let''s build a more efficient and connected healthcare workforce together!
-
-    '
+  title: Intelycare Webhook Events API
   version: 1.0.0
-  title: IntelyCare API Documentation Webhook Events API
   contact:
     name: API Support
     email: apisupport@intelycare.com
-  x-logo:
-    url: https://www.intelycare.com/wp-content/uploads/2023/08/ic-logo-2-1.svg
-    altText: IntelyCare Logo
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
+  x-logo:
+    url: https://www.intelycare.com/wp-content/uploads/2023/08/ic-logo-2-1.svg
+    altText: IntelyCare Logo
+  description: 'Operations tagged Webhook Events across 2 of this provider''s published API definitions: intelycare-external-scheduling-openapi.yml, intelycare-webhook-events-api-openapi.yml. Each path carries the servers of the definition it was published in.'
 servers:
 - url: //api.intelycare.com/external-scheduling/v1/
   description: Default server
@@ -167,6 +127,11 @@ webhooks:
                 email: florence.nightengale@gmail.com
                 profilePicture: XfPy2KmGiZTQySSS3OHCWw==
               statusTimestamp: '2024-01-17T15:01:00'
+    servers:
+    - url: //api.intelycare.com/external-scheduling/v1/
+      description: Default server
+    - url: //api.pre.prod01.platform.intelycare.com/external-scheduling/v1/
+      description: Sandbox server
   ShiftRelease:
     post:
       tags:
@@ -219,6 +184,11 @@ webhooks:
               externalShiftId: '2546810'
               shiftStatus: Released
               statusTimestamp: '2024-01-17T15:01:00'
+    servers:
+    - url: //api.intelycare.com/external-scheduling/v1/
+      description: Default server
+    - url: //api.pre.prod01.platform.intelycare.com/external-scheduling/v1/
+      description: Sandbox server
 components:
   securitySchemes:
     ApiKeyAuth:
@@ -229,6 +199,9 @@ components:
       type: apiKey
       in: header
       name: X-Signature-IC
+x-refined-from:
+- intelycare-external-scheduling-openapi.yml
+- intelycare-webhook-events-api-openapi.yml
 x-tagGroups:
 - name: APIs
   tags:
