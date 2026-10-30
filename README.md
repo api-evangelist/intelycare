@@ -64,56 +64,135 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-IntelyCare is a healthcare workforce platform connecting post-acute and acute-care facilities with
-W2-employed per-diem nursing professionals ("IntelyPros") — RNs, LPNs and CNAs — across per-diem
-shifts, contract placements and travel assignments, plus credentialing, onboarding, continuing
-education (IntelyEdu) and 24/7 clinical support. IntelyCare acquired CareRev in January 2026 and
-also operates the Credenza verified-nursing-identity job board.
+IntelyCare is a healthcare workforce platform that connects post-acute and acute-care facilities with W2-employed per-diem nursing professionals ("IntelyPros") — RNs, LPNs and CNAs — through an app-based marketplace covering per-diem shifts, contract placements and travel assignments, plus credentialing, onboarding, continuing education (IntelyEdu) and 24/7 clinical support. For facilities it provides scheduling, shift-fill and timekeeping software. IntelyCare exposes a public External Scheduling REST API that lets a facility's own scheduling or EHR system programmatically create, update and cancel shift requests, exchange timecards for billing reconciliation, and post clock-in/clock-out events, with HMAC-signed webhooks pushing shift-accept and shift-release status back in real time. IntelyCare acquired CareRev in January 2026 and also operates the Credenza verified-nursing-identity job board.
 
-- https://www.intelycare.com/
-- https://apidocs.intelycare.com/
+**Areas:** Healthcare · Healthcare Staffing · Nursing · Workforce Management · Scheduling · Shift Management · Timekeeping · Marketplace · Webhook · Per Diem · Credentialing · Post-Acute Care
 
-## API
+## IntelyCare on APIs.io
 
-**IntelyCare External Scheduling API v1** — a REST API that lets a facility's own scheduling or
-EHR system create, update and cancel shift requests, exchange timecards for billing
-reconciliation, and post clock-in/clock-out events. Shift status flows back asynchronously over
-two HMAC-SHA256-signed webhooks (ShiftAccept, ShiftRelease).
+Everything profiled for IntelyCare is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/intelycare/](https://apis.io/providers/intelycare/)** — or go straight to one of the APIs or properties below.
 
-- Production: `https://api.intelycare.com/external-scheduling/v1/`
-- Sandbox: `https://api.pre.prod01.platform.intelycare.com/external-scheduling/v1/`
-- Auth: `X-API-KEY` header (client-scoped) plus `X-CLIENT-ID`
-- 6 REST operations, 2 webhook events, no GET operation anywhere
+### APIs (4)
 
-The OpenAPI 3.0.0 document in `openapi/` was harvested verbatim from the `__redoc_state` payload
-embedded in IntelyCare's Redoc docs page — IntelyCare serves no `/openapi.json`, `/swagger.json`
-or `/openapi.yaml` on any host.
+- [IntelyCare Check In / Check Out API](https://apis.io/apis/intelycare/intelycare-check-in-check-out-api/) — Easily manage check-in and check-out events for shifts. Our API allows you to programmatically submit and manage check-in and check-out events, providing…
+- [IntelyCare Shift API](https://apis.io/apis/intelycare/intelycare-shift-api/) — Integrate with the IntelyCare platform to create shift requests effortlessly. Our API allows you to programmatically submit and manage shift requests,…
+- [IntelyCare Webhook Events API](https://apis.io/apis/intelycare/intelycare-webhook-events-api/) — Real-time updates on the status of submitted shifts. The API response includes valuable information about the assigned IntelyPro, giving you insights into…
+- [IntelyCare Time Card API](https://apis.io/apis/intelycare/intelycare-time-card-api/) — Simplify billing reconciliation by exchanging timecard information seamlessly. Our API supports the exchange of accurate timekeeping data, ensuring a smooth…
 
-## Artifacts
+### Published properties
 
-| Dir | What |
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### AsyncAPI (1)
+
+Event-driven and webhook contracts.
+
+- [IntelyCare Shift Events](https://apis.io/asyncapis/intelycare/intelycare-shift-events-asyncapi/)
+
+#### Event channels (2)
+
+Individual events and webhooks the provider emits.
+
+- [/](https://apis.io/channels/intelycare/shiftaccept/)
+- [/](https://apis.io/channels/intelycare/shiftrelease/)
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [intelycare](https://apis.io/servers/intelycare/intelycare/)
+
+#### Agentic access (1)
+
+Which operations an agent can call, which act, and which need a human in the loop.
+
+- [Intelycare Agentic Access](https://apis.io/agentic-access/intelycare/intelycare-agentic-access/)
+
+#### Collections (1)
+
+Postman and Open Collection request collections.
+
+- [IntelyCare API Documentation](https://apis.io/collections/intelycare/open-intelycare-external-scheduling/)
+
+#### Overlays (1)
+
+OpenAPI overlays, including conversational phrasing for each operation.
+
+- [Intelycare External Scheduling Overlay](https://apis.io/overlays/intelycare/intelycare-external-scheduling-overlay/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Intelycare Authentication](https://apis.io/security/intelycare/intelycare-authentication/)
+- [Intelycare Domain Security](https://apis.io/security/intelycare/intelycare-domain-security/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.intelycare.com/)
+- [Documentation](https://apidocs.intelycare.com/)
+- [Getting started](https://apidocs.intelycare.com/)
+- [API reference](https://apidocs.intelycare.com/)
+- [Pricing](https://credenzahealth.com/facilities/employer-products)
+- [Sign up](https://www.intelycare.com/for-nursing-professionals/apply/)
+- [Support](https://www.intelycare.com/company/contact-us/)
+- [Blog](https://www.intelycare.com/blog/nursing-professionals/)
+- [Terms of service](https://www.intelycare.com/terms-of-use/)
+- [Privacy policy](https://www.intelycare.com/privacy-policy/)
+
+## API Evangelist rating
+
+**Kin Score 44.2** — developing · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
 |---|---|
-| `openapi/` | Harvested OpenAPI 3.0.0 (+ original JSON in `_original/`) |
-| `asyncapi/` | AsyncAPI 3.0.0 projection of the spec's `x-webhooks` event surface |
-| `overlays/` | OpenAPI Overlay 1.0.0 of our enhancements and observed spec defects |
-| `authentication/` | Auth profile — API key + HMAC webhook signing |
-| `conventions/` | Cross-cutting semantics: versioning, tracing, error envelope, timestamps |
-| `errors/` | Error catalogue derived from the 4xx responses |
-| `data-model/` | Entity graph: Client, Facility, Shift, HealthcareProfessional, Timecard, ClockEvent |
-| `examples/` | Every request/response/webhook example IntelyCare publishes |
-| `sandbox/` | Environments and how credentials are provisioned |
-| `lifecycle/` | Versioning; deprecation, SLA and status-page absence |
-| `conformance/` | Standards conformance assessment |
-| `security/` | Probed TLS/HSTS/DNSSEC/CAA/SPF/DMARC posture |
-| `well-known/` | `/.well-known/` probe results across every host |
-| `agentic-access/` | Recommended `x-agentic-access` execution contracts |
-| `skills/` | Two packaged Agent Skills covering all 6 operations and both events |
-| `mcp/` | Candidate MCP tool surface — **not** published by IntelyCare |
-| `llms/` | Generated `llms.txt` |
+| Discoverability | 73.2 |
+| Contract quality | 58.8 |
+| Contract governance | 4.5 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 56.5 |
+| Access clarity | 44.7 |
 
-## Not published by IntelyCare
+**Agent readiness 26.6** — agent-aware
 
-Probed 2026-08-01 and confirmed absent: SDKs/client libraries in any package registry, a CLI, a
-Postman collection, an MCP server, an A2A agent card, a `security.txt`, OAuth/OIDC discovery, a
-status page, a public API changelog, a deprecation policy, a trust center, published compliance
-certifications, and a vulnerability-disclosure program.
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | verified |
+| Rate Limit Signal | — |
+| Event Surface Described | derived (partial credit) |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+| Pagination Ratio | na |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 19.5** — Health
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/intelycare/](https://apis.io/providers/intelycare/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for IntelyCare: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/intelycare/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
